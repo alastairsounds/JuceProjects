@@ -17,7 +17,7 @@ void MainComponent::paint (juce::Graphics& g)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
     g.setFont (juce::FontOptions (48.0f));
-    g.setColour (juce::Colours::red);
+    g.setColour (juce::Colours::blue);
     g.drawText ("Hello New World!", getLocalBounds(), juce::Justification::centred, true);
 }
 
