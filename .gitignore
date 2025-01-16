@@ -2,7 +2,11 @@
 
 .DS_Store
 
-### TODO: determine best practices for git ###
+### AKS ###
+
+.Resources
+
+###########
 
 Builds
 JuceLibraryCode
