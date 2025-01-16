@@ -22,10 +22,16 @@ AudioProgrammer_TestPluginAudioProcessor::AudioProgrammer_TestPluginAudioProcess
                        )
 #endif
 {
+    mFormatManager.registerBasicFormats();
+    
+    for (int i = 0; i < mNumVoices; i++) {
+        mSampler.addVoice(new juce::SamplerVoice());
+    }
 }
 
 AudioProgrammer_TestPluginAudioProcessor::~AudioProgrammer_TestPluginAudioProcessor()
 {
+    mFormatReader = nullptr;
 }
 
 //==============================================================================
@@ -93,8 +99,7 @@ void AudioProgrammer_TestPluginAudioProcessor::changeProgramName (int index, con
 //==============================================================================
 void AudioProgrammer_TestPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    mSampler.setCurrentPlaybackSampleRate(sampleRate);
 }
 
 void AudioProgrammer_TestPluginAudioProcessor::releaseResources()
@@ -135,27 +140,10 @@ void AudioProgrammer_TestPluginAudioProcessor::processBlock (juce::AudioBuffer<f
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
+    mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================
@@ -181,6 +169,37 @@ void AudioProgrammer_TestPluginAudioProcessor::setStateInformation (const void* 
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+void AudioProgrammer_TestPluginAudioProcessor::loadFile()
+{
+    mSampler.clearSounds();
+    
+    juce::FileChooser chooser { "Please load a file" };
+    
+    if (chooser.browseForFileToOpen())
+    {
+        auto file = chooser.getResult();
+        mFormatReader = mFormatManager.createReaderFor(file);
+    }
+    
+    juce::BigInteger range;
+    range.setRange(0, 128, true);
+    
+    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1, 0.1, 10.0));
+}
+
+void AudioProgrammer_TestPluginAudioProcessor::loadFile(const juce::String &path)
+{
+    mSampler.clearSounds();
+    
+    auto file = juce::File(path);
+    mFormatReader = mFormatManager.createReaderFor(file);
+    
+    juce::BigInteger range;
+    range.setRange(0, 128, true);
+    
+    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1, 0.1, 10.0));
 }
 
 //==============================================================================

@@ -53,7 +53,17 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    void loadFile();
+    void loadFile(const juce::String& path);
+    
+    int getNumSamplerSounds() { return mSampler.getNumSounds(); };
+    
 private:
+    juce::Synthesiser mSampler;
+    const int mNumVoices { 3 };
+    
+    juce::AudioFormatManager mFormatManager;
+    juce::AudioFormatReader* mFormatReader { nullptr };
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioProgrammer_TestPluginAudioProcessor)
 };

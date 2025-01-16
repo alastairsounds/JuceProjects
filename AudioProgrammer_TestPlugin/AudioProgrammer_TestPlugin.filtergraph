@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FILTERGRAPH>
+  <FILTER uid="14" x="0.25" y="0.1" useARA="0">
+    <PLUGIN name="MIDI Input" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="JUCE" version="1.0" file="" uniqueId="a9e4f9eb"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="0"
+            numOutputs="0" isShell="0" hasARAExtension="0" uid="a9e4f9eb"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="disabled"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="disabled"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="15" x="0.5" y="0.9" useARA="0">
+    <PLUGIN name="Audio Output" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="JUCE" version="1.0" file="" uniqueId="724248cb"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="1"
+            numOutputs="0" isShell="0" hasARAExtension="0" uid="724248cb"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="disabled"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="22" x="0.2446524064171123" y="0.3211586901763224" useARA="0"
+          uiLastX_Normal="758" uiLastY_Normal="576" uiopen_Normal="0">
+    <PLUGIN name="MIDI Logger" format="Internal" category="Synth" manufacturer="JUCE"
+            version="1.0.0" file="MIDI Logger" uniqueId="97e2978f" isInstrument="1"
+            fileTime="0" infoUpdateTime="0" numInputs="0" numOutputs="0"
+            isShell="0" hasARAExtension="0" uid="97e2978f"/>
+    <STATE>98.VMjLgjE....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOyQWXzUlO7TWZSQWXzUFH2kFYzgVOhbCM1HBHnUVZmgFc8HxL2HiHu3COuLGcgQWY9..</STATE>
+    <LAYOUT>
+      <INPUTS/>
+      <OUTPUTS/>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="23" x="0.39" y="0.4876543209876543" useARA="0" uiLastX_Normal="1"
+          uiLastY_Normal="333" uiopen_Normal="0">
+    <PLUGIN name="AudioProgrammer_TestPlugin" format="AudioUnit" category="Synth"
+            manufacturer="AKS_Dev" version="1.0.0" file="AudioUnit:Synths/aumu,Vhqj,Manu"
+            uniqueId="7a7c726a" isInstrument="1" fileTime="0" infoUpdateTime="1946c886e9f"
+            numInputs="0" numOutputs="2" isShell="0" hasARAExtension="0"
+            uid="7a7c726a"/>
+    <STATE>175.hAGaoMGcv.y0AHv.DTfAGfPBJ7.DQHAWsEla0YVXiQWcxUlbTQVXzEFWkwVYsUlaz0hag0VYWMWchQWdvU1U1Ulbyk1atQEc4AWYT4VXsUlDMEla0ATzKvPTxDcCNDELV8TczAWczIgUnEmZP.fDgUWa0gUUtQWZzwVYjgvEjjhM9XzRPUkUYskWfcFatMG.......P.A.........vD....................7A</STATE>
+    <LAYOUT>
+      <INPUTS/>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <CONNECTION srcFilter="14" srcChannel="4096" dstFilter="22" dstChannel="4096"/>
+  <CONNECTION srcFilter="22" srcChannel="4096" dstFilter="23" dstChannel="4096"/>
+  <CONNECTION srcFilter="23" srcChannel="0" dstFilter="15" dstChannel="0"/>
+  <CONNECTION srcFilter="23" srcChannel="1" dstFilter="15" dstChannel="1"/>
+</FILTERGRAPH>

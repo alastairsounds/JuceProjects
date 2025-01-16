@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="vhQj6X" name="AudioProgrammer_TestPlugin" projectType="audioplug"
-              useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1"
+              defines="JUCE_MODAL_LOOPS_PERMITTED=1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              companyName="AKS_Dev">
   <MAINGROUP id="VvLa57" name="AudioProgrammer_TestPlugin">
     <GROUP id="{2F31A21B-9A8A-15D8-7285-E94882786228}" name="Source">
       <FILE id="rb2OP1" name="PluginProcessor.cpp" compile="1" resource="0"
