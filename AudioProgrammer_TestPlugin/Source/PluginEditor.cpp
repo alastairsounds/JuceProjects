@@ -28,18 +28,22 @@ void AudioProgrammer_TestPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
     g.fillAll (juce::Colours::black);
     
-    g.setColour(juce::Colours::white);
-    g.setFont(15.0f);
+    // New file dropped?
+        // if yes
+        //
     
-    if (audioProcessor.getNumSamplerSounds())
-    {
-        g.fillAll (juce::Colours::red);
-        g.drawText("Sound Loaded", getWidth() / 2 - 50, getHeight() / 2 - 10, 100, 20, juce::Justification::centred);
-    }
-    else
-    {
-        g.drawText("Load a Sound", getWidth() / 2 - 50, getHeight() / 2 - 10, 100, 20, juce::Justification::centred);
-    }
+//    g.setColour(juce::Colours::white);
+//    g.setFont(15.0f);
+//    
+//    if (audioProcessor.getNumSamplerSounds())
+//    {
+//        g.fillAll (juce::Colours::red);
+//        g.drawText("Sound Loaded", getWidth() / 2 - 50, getHeight() / 2 - 10, 100, 20, juce::Justification::centred);
+//    }
+//    else
+//    {
+//        g.drawText("Load a Sound", getWidth() / 2 - 50, getHeight() / 2 - 10, 100, 20, juce::Justification::centred);
+//    }
 }
 
 void AudioProgrammer_TestPluginAudioProcessorEditor::resized()

@@ -196,6 +196,13 @@ void AudioProgrammer_TestPluginAudioProcessor::loadFile(const juce::String &path
     auto file = juce::File(path);
     mFormatReader = mFormatManager.createReaderFor(file);
     
+    auto sampleLength = static_cast<int>(mFormatReader->lengthInSamples);
+    
+    mWaveForm.setSize(1, sampleLength);
+    mFormatReader->read(&mWaveForm, 0, sampleLength, 0, true, false);
+    
+    auto buffer = mWaveForm.getReadPointer(0);
+    
     juce::BigInteger range;
     range.setRange(0, 128, true);
     
