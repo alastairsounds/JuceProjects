@@ -17,27 +17,34 @@ class MidiProcessor
 public:
     void process(juce::MidiBuffer& midiMessages)
     {
-        processedBuffer.clear();
+        processedBuffer.clear(); // clear buffer, just in case buffer contains data
+        processMidiInput(midiMessages);
+        midiMessages.swapWith(processedBuffer);
+    }
+
+    void processMidiInput(juce::MidiBuffer &midiMessages)
+    {
         // Juce uses linked lists to manipulate MidiBuffers
         juce::MidiBuffer::Iterator it(midiMessages);
         juce::MidiMessage currentMessage;
         int samplePos;
-
+        
         while (it.getNextEvent(currentMessage, samplePos))
         {
             if (currentMessage.isNoteOnOrOff())
-            {
-                auto transposedMessage = currentMessage;
-                auto oldNoteNum = transposedMessage.getNoteNumber();
-                transposedMessage.setNoteNumber(oldNoteNum + INTERVAL);
-                
-                processedBuffer.addEvent(transposedMessage, samplePos);
-            }
+                addTransposedNode(currentMessage, samplePos);
+            
             processedBuffer.addEvent(currentMessage, samplePos);
         }
-        
-        midiMessages.swapWith(processedBuffer);
     }
-    
+
+    void addTransposedNode(juce::MidiMessage messageToTranspose, int samplePos) {
+        auto oldNoteNum = messageToTranspose.getNoteNumber();
+        messageToTranspose.setNoteNumber(oldNoteNum + INTERVAL);
+        
+        processedBuffer.addEvent(messageToTranspose, samplePos);
+    }
+
+
     juce::MidiBuffer processedBuffer;
 };
