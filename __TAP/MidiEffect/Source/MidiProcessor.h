@@ -22,29 +22,27 @@ public:
         midiMessages.swapWith(processedBuffer);
     }
 
-    void processMidiInput(juce::MidiBuffer &midiMessages)
+    void processMidiInput(juce::MidiBuffer& midiMessages)
     {
-        // Juce uses linked lists to manipulate MidiBuffers
-        juce::MidiBuffer::Iterator it(midiMessages);
-        juce::MidiMessage currentMessage;
+        juce::MidiMessage m;
         int samplePos;
-        
-        while (it.getNextEvent(currentMessage, samplePos))
+        for(const juce::MidiMessageMetadata metadata : midiMessages)
         {
-            if (currentMessage.isNoteOnOrOff())
-                addTransposedNode(currentMessage, samplePos);
-            
-            processedBuffer.addEvent(currentMessage, samplePos);
+            m = metadata.getMessage();
+            samplePos = metadata.samplePosition;
+            if(m.isNoteOnOrOff())
+                addTransposedNode(m, samplePos);
+            processedBuffer.addEvent(m, samplePos);
+            // DBG(m.getDescription());
         }
     }
 
-    void addTransposedNode(juce::MidiMessage messageToTranspose, int samplePos) {
+    void addTransposedNode(juce::MidiMessage messageToTranspose, int samplePos)
+    {
         auto oldNoteNum = messageToTranspose.getNoteNumber();
         messageToTranspose.setNoteNumber(oldNoteNum + INTERVAL);
-        
         processedBuffer.addEvent(messageToTranspose, samplePos);
     }
-
 
     juce::MidiBuffer processedBuffer;
 };
