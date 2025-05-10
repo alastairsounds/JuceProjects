@@ -4,6 +4,7 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="i2iXfW" name="MidiEffect">
     <GROUP id="{42B3BF7E-F778-D1E5-7D18-0A0BBD77DCA2}" name="Source">
+      <FILE id="b7QaDS" name="MidiProcessor.h" compile="0" resource="0" file="Source/MidiProcessor.h"/>
       <FILE id="ftBeKr" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Y9ewyG" name="PluginProcessor.h" compile="0" resource="0"
