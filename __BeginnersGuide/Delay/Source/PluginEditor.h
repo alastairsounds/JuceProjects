@@ -8,26 +8,26 @@
 
 #pragma once
 
-#include "PluginProcessor.h"
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
 
 //==============================================================================
 /**
 */
-class MidiEffectAudioProcessorEditor : public juce::AudioProcessorEditor
+class DelayAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    MidiEffectAudioProcessorEditor(MidiEffectAudioProcessor&);
-    ~MidiEffectAudioProcessorEditor() override;
+    DelayAudioProcessorEditor (DelayAudioProcessor&);
+    ~DelayAudioProcessorEditor() override;
 
     //==============================================================================
-    void paint(juce::Graphics&) override;
+    void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    MidiEffectAudioProcessor& audioProcessor;
+    DelayAudioProcessor& audioProcessor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MidiEffectAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessorEditor)
 };

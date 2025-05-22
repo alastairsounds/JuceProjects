@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="OxMouh" name="MidiEffect" projectType="audioplug" useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn" cppLanguageStandard="20">
-  <MAINGROUP id="i2iXfW" name="MidiEffect">
-    <GROUP id="{42B3BF7E-F778-D1E5-7D18-0A0BBD77DCA2}" name="Source">
-      <FILE id="b7QaDS" name="MidiProcessor.h" compile="0" resource="0" file="Source/MidiProcessor.h"/>
-      <FILE id="ftBeKr" name="PluginProcessor.cpp" compile="1" resource="0" file="Source/PluginProcessor.cpp"/>
-      <FILE id="Y9ewyG" name="PluginProcessor.h" compile="0" resource="0" file="Source/PluginProcessor.h"/>
-      <FILE id="Nz1S2f" name="PluginEditor.cpp" compile="1" resource="0" file="Source/PluginEditor.cpp"/>
-      <FILE id="Wo9y0i" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+<JUCERPROJECT id="RVgGVz" name="Delay" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginManufacturerCode="Dlay"
+              cppLanguageStandard="20">
+  <MAINGROUP id="iHylLk" name="Delay">
+    <GROUP id="{22D25ECD-9B77-410F-7E89-B86D0FACC91E}" name="Source">
+      <FILE id="DFhpO9" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="bJ5lnY" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="scjjK8" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="LiYl8C" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
@@ -28,8 +33,9 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="MidiEffect"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="MidiEffect"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Delay" enablePluginBinaryCopyStep="1"
+                       recommendedWarnings="LLVM"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Delay"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../../../../../Dev/JUCE/modules"/>
