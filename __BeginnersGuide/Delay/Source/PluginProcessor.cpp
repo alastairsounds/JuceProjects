@@ -11,17 +11,13 @@
 
 //==============================================================================
 DelayAudioProcessor::DelayAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
-#endif
+                       ),
+       params(apvts)
 {
+    // do nothing
 }
 
 DelayAudioProcessor::~DelayAudioProcessor()
@@ -130,7 +126,7 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
     // 1
-    float gainInDecibels = -6.0f;
+    float gainInDecibels = params.gainParam->get();
     // 2
     float gain = juce::Decibels::decibelsToGain(gainInDecibels);
     
@@ -156,15 +152,16 @@ juce::AudioProcessorEditor* DelayAudioProcessor::createEditor()
 //==============================================================================
 void DelayAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    copyXmlToBinary(*apvts.copyState().createXml(), destData);
 }
 
 void DelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
+    if (xml.get() != nullptr && xml->hasTagName(apvts.state.getType())) {
+        apvts.replaceState(juce::ValueTree::fromXml(*xml));
+//        DBG(apvts.copyState().toXmlString());
+    }
 }
 
 //==============================================================================
