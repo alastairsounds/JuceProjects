@@ -1,24 +1,13 @@
-/*
-  ==============================================================================
-
-    RotaryKnob.h
-    Created: 26 May 2025 3:51:21pm
-    Author:  Alastair Scheuermann
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
 
-//==============================================================================
-/*
-*/
 class RotaryKnob  : public juce::Component
 {
 public:
-    RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeState& apvts, const juce::ParameterID& parameterID);
+    RotaryKnob(const juce::String& text,
+               juce::AudioProcessorValueTreeState& apvts,
+               const juce::ParameterID& parameterID);
     ~RotaryKnob() override;
 
     void resized() override;

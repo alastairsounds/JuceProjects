@@ -30,13 +30,12 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     DelayAudioProcessor& audioProcessor;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessorEditor)
+
     RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID };
     RotaryKnob mixKnob { "Mix", audioProcessor.apvts, mixParamID };
     RotaryKnob delayTimeKnob { "Time", audioProcessor.apvts, delayTimeParamID };
-    juce::AudioProcessorValueTreeState::SliderAttachment attachment {
-        audioProcessor.apvts, gainParamID.getParamID(), gainKnob.slider
-    };
-    juce::GroupComponent delayGroup, feedbackGroup, outputGroup;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessorEditor)
+    juce::GroupComponent delayGroup, feedbackGroup, outputGroup;
 };

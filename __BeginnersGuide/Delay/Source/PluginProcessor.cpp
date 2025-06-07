@@ -10,12 +10,13 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-DelayAudioProcessor::DelayAudioProcessor()
-     : AudioProcessor (BusesProperties()
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                       ),
-       params(apvts)
+DelayAudioProcessor::DelayAudioProcessor() :
+    AudioProcessor(
+        BusesProperties()
+           .withInput("Input", juce::AudioChannelSet::stereo(), true)
+           .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+    ),
+    params(apvts)
 {
     // do nothing
 }
@@ -99,10 +100,12 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     delayLine.prepare(spec);
 
-    double numSamples = (Parameters::maxDelayTime / 1000.0) * sampleRate;
+    double numSamples = Parameters::maxDelayTime / 1000.0 * sampleRate;
     int maxDelayInSamples = int(std::ceil(numSamples));
     delayLine.setMaximumDelayInSamples(maxDelayInSamples);
     delayLine.reset();
+
+    //DBG(maxDelayInSamples);
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -111,7 +114,7 @@ void DelayAudioProcessor::releaseResources()
     // spare memory, etc.
 }
 
-bool DelayAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+bool DelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
     return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
 }
@@ -131,12 +134,6 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
     params.update();
 
     float sampleRate = float(getSampleRate());
@@ -146,7 +143,8 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
 
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
-        float delayInSamples = params.delayTime / 1000.f * sampleRate;
+
+        float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
 
         float dryL = channelDataL[sample];
@@ -157,9 +155,9 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
 
         float wetL = delayLine.popSample(0);
         float wetR = delayLine.popSample(1);
-        
-        float mixL = dryL + (wetL * params.mix);
-        float mixR = dryR + (wetR * params.mix);
+
+        float mixL = dryL + wetL * params.mix;
+        float mixR = dryR + wetR * params.mix;
 
         channelDataL[sample] = mixL * params.gain;
         channelDataR[sample] = mixR * params.gain;
@@ -181,6 +179,8 @@ juce::AudioProcessorEditor* DelayAudioProcessor::createEditor()
 void DelayAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     copyXmlToBinary(*apvts.copyState().createXml(), destData);
+
+    //DBG(apvts.copyState().toXmlString());
 }
 
 void DelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
@@ -188,7 +188,6 @@ void DelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes
     std::unique_ptr<juce::XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
     if (xml.get() != nullptr && xml->hasTagName(apvts.state.getType())) {
         apvts.replaceState(juce::ValueTree::fromXml(*xml));
-//        DBG(apvts.copyState().toXmlString());
     }
 }
 

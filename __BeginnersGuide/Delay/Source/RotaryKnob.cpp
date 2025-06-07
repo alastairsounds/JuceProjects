@@ -1,19 +1,10 @@
-/*
-  ==============================================================================
-
-    RotaryKnob.cpp
-    Created: 26 May 2025 3:51:21pm
-    Author:  Alastair Scheuermann
-
-  ==============================================================================
-*/
-
 #include <JuceHeader.h>
 #include "RotaryKnob.h"
 
-//==============================================================================
-RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeState& apvts, const juce::ParameterID& parameterID)
-: attachment (apvts, parameterID.getParamID(), slider)
+RotaryKnob::RotaryKnob(const juce::String& text,
+                       juce::AudioProcessorValueTreeState& apvts,
+                       const juce::ParameterID& parameterID)
+    : attachment(apvts, parameterID.getParamID(), slider)
 {
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 16);
@@ -21,9 +12,8 @@ RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeSt
     addAndMakeVisible(slider);
 
     label.setText(text, juce::NotificationType::dontSendNotification);
-
     label.setJustificationType(juce::Justification::horizontallyCentred);
-    label.setBorderSize(juce::BorderSize<int>(0));
+    label.setBorderSize(juce::BorderSize<int>{ 0, 0, 2, 0 });
     label.attachToComponent(&slider, false);
     addAndMakeVisible(label);
 

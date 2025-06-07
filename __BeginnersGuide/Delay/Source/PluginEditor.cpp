@@ -6,14 +6,12 @@
   ==============================================================================
 */
 
-#include "PluginEditor.h"
 #include "PluginProcessor.h"
-#include "RotaryKnob.h"
-
+#include "PluginEditor.h"
 
 //==============================================================================
-DelayAudioProcessorEditor::DelayAudioProcessorEditor(DelayAudioProcessor& p)
-    : AudioProcessorEditor(&p), audioProcessor(p)
+DelayAudioProcessorEditor::DelayAudioProcessorEditor (DelayAudioProcessor& p)
+    : AudioProcessorEditor (&p), audioProcessor (p)
 {
     delayGroup.setText("Delay");
     delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
@@ -38,7 +36,7 @@ DelayAudioProcessorEditor::~DelayAudioProcessorEditor()
 }
 
 //==============================================================================
-void DelayAudioProcessorEditor::paint(juce::Graphics& g)
+void DelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
     g.fillAll(juce::Colours::darkgrey);
 }
@@ -52,8 +50,12 @@ void DelayAudioProcessorEditor::resized()
 
     // Position the groups
     delayGroup.setBounds(10, y, 110, height);
+
     outputGroup.setBounds(bounds.getWidth() - 160, y, 150, height);
-    feedbackGroup.setBounds(delayGroup.getRight() + 10, y, outputGroup.getX() - delayGroup.getRight() - 20, height);
+
+    feedbackGroup.setBounds(delayGroup.getRight() + 10, y,
+                            outputGroup.getX() - delayGroup.getRight() - 20,
+                            height);
 
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
