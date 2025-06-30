@@ -1,4 +1,5 @@
 #pragma once
+
 #include <JuceHeader.h>
 
 namespace Colors
@@ -28,6 +29,17 @@ namespace Colors
     }
 }
 
+class Fonts
+{
+public:
+    Fonts() = delete;
+
+    static juce::Font getFont(float height = 16.0f);
+
+private:
+    static const juce::Typeface::Ptr typeface;
+};
+
 class RotaryKnobLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
@@ -42,27 +54,17 @@ public:
     void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height,
                           float sliderPos, float rotaryStartAngle,
                           float rotaryEndAngle, juce::Slider& slider) override;
+
     juce::Font getLabelFont(juce::Label&) override;
     juce::Label* createSliderTextBox(juce::Slider&) override;
-    void drawTextEditorOutline(juce::Graphics&, int, int,
-                               juce::TextEditor&) override { }
-    void fillTextEditorBackground(juce::Graphics&, int width, int height,
-                          juce::TextEditor&) override;
+
+    void drawTextEditorOutline(juce::Graphics&, int, int, juce::TextEditor&) override { }
+    void fillTextEditorBackground(juce::Graphics&, int width, int height, juce::TextEditor&) override;
 
 private:
-    juce::DropShadow dropShadow { Colors::Knob::dropShadow, 6, { 0, 3 } };
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotaryKnobLookAndFeel)
-};
 
-class Fonts
-{
-    Fonts() = delete; // Prevent instantiation
-
-public:
-    static juce::Font getFont(float height = 16.0f);
-
-private:
-    static const juce::Typeface::Ptr typeface;
+    juce::DropShadow dropShadow { Colors::Knob::dropShadow, 6, { 0, 3 } };
 };
 
 class MainLookAndFeel : public juce::LookAndFeel_V4

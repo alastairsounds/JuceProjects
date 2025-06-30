@@ -19,13 +19,14 @@ RotaryKnob::RotaryKnob(const juce::String& text,
     label.attachToComponent(&slider, false);
     addAndMakeVisible(label);
 
+    setSize(70, 110);
+
     setLookAndFeel(RotaryKnobLookAndFeel::get());
 
     float pi = juce::MathConstants<float>::pi;
-    slider.setRotaryParameters(pi * 1.25f, pi * 2.75f, true);
-    slider.getProperties().set("drawFromMiddle", drawFromMiddle);
+    slider.setRotaryParameters(1.25f * pi, 2.75f * pi, true);
 
-    setSize(70, 110);
+    slider.getProperties().set("drawFromMiddle", drawFromMiddle);
 }
 
 RotaryKnob::~RotaryKnob()

@@ -9,10 +9,10 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "LookAndFeel.h"
 #include "PluginProcessor.h"
 #include "Parameters.h"
 #include "RotaryKnob.h"
+#include "LookAndFeel.h"
 
 //==============================================================================
 /**
@@ -38,7 +38,7 @@ private:
     RotaryKnob mixKnob { "Mix", audioProcessor.apvts, mixParamID };
     RotaryKnob delayTimeKnob { "Time", audioProcessor.apvts, delayTimeParamID };
 
-    MainLookAndFeel mainLF;
-
     juce::GroupComponent delayGroup, feedbackGroup, outputGroup;
+
+    MainLookAndFeel mainLF;
 };

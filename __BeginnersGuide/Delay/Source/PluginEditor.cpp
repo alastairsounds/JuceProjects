@@ -28,9 +28,11 @@ DelayAudioProcessorEditor::DelayAudioProcessorEditor (DelayAudioProcessor& p)
     outputGroup.addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
-    setLookAndFeel(&mainLF);
-
     setSize(500, 330);
+
+    //gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::green);
+
+    setLookAndFeel(&mainLF);
 }
 
 DelayAudioProcessorEditor::~DelayAudioProcessorEditor()
@@ -41,15 +43,18 @@ DelayAudioProcessorEditor::~DelayAudioProcessorEditor()
 //==============================================================================
 void DelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    auto noise = juce::ImageCache::getFromMemory(BinaryData::Noise_png, BinaryData::Noise_pngSize);
+    auto noise = juce::ImageCache::getFromMemory(
+        BinaryData::Noise_png, BinaryData::Noise_pngSize);
     auto fillType = juce::FillType(noise, juce::AffineTransform::scale(0.5f));
     g.setFillType(fillType);
     g.fillRect(getLocalBounds());
+
     auto rect = getLocalBounds().withHeight(40);
     g.setColour(Colors::header);
     g.fillRect(rect);
 
-    auto image = juce::ImageCache::getFromMemory(BinaryData::Logo_png, BinaryData::Logo_pngSize);
+    auto image = juce::ImageCache::getFromMemory(
+        BinaryData::Logo_png, BinaryData::Logo_pngSize);
 
     int destWidth = image.getWidth() / 2;
     int destHeight = image.getHeight() / 2;
