@@ -4,7 +4,12 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginManufacturerCode="Dlay"
               cppLanguageStandard="20">
   <MAINGROUP id="iHylLk" name="Delay">
+    <GROUP id="{067FC96F-BD6A-FED9-3841-02F8E4C88C8E}" name="Assets">
+      <FILE id="zs2wuT" name="Lato-Medium.ttf" compile="0" resource="1" file="../../../../../../../Downloads/Lato-Medium.ttf"/>
+    </GROUP>
     <GROUP id="{22D25ECD-9B77-410F-7E89-B86D0FACC91E}" name="Source">
+      <FILE id="devwCe" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
+      <FILE id="RBgYYT" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
       <FILE id="e95Fju" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
       <FILE id="XFhUfy" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
       <FILE id="scjjK8" name="PluginEditor.cpp" compile="1" resource="0"

@@ -28,17 +28,20 @@ DelayAudioProcessorEditor::DelayAudioProcessorEditor (DelayAudioProcessor& p)
     outputGroup.addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
+    setLookAndFeel(&mainLF);
+
     setSize(500, 330);
 }
 
 DelayAudioProcessorEditor::~DelayAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void DelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::darkgrey);
+    g.fillAll(Colors::background);
 }
 
 void DelayAudioProcessorEditor::resized()
