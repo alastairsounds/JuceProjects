@@ -90,3 +90,7 @@ CMakeUserPresets.json
 
 # Env
 .env*
+
+# Persistent Issue files
+.Templates/JuceAudioPluginTemplate
+__Tutorials/WolfSoundAudio/juce-webview-tutorial
