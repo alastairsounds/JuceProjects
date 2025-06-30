@@ -25,6 +25,7 @@ RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()
     setColour(juce::Label::textColourId, Colors::Knob::label);
     setColour(juce::Slider::textBoxTextColourId, Colors::Knob::label);
     setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::transparentBlack);
+    setColour(juce::CaretComponent::caretColourId, Colors::Knob::caret);
 }
 
 void RotaryKnobLookAndFeel::drawRotarySlider(
@@ -135,6 +136,8 @@ public:
         ed->setBorder(juce::BorderSize<int>());
         ed->setIndents(2, 1);
         ed->setJustification(juce::Justification::centredTop);
+        ed->setPopupMenuEnabled(false);
+        ed->setInputRestrictions(8);
         return ed;
     }
 };
@@ -153,6 +156,14 @@ juce::Label* RotaryKnobLookAndFeel::createSliderTextBox(juce::Slider& slider)
     l->setColour(juce::TextEditor::backgroundColourId,
                  Colors::Knob::textBoxBackground);
     return l;
+}
+
+void RotaryKnobLookAndFeel::fillTextEditorBackground(juce::Graphics& g,
+    [[maybe_unused]] int width, [[maybe_unused]] int height, juce::TextEditor& textEditor)
+{
+    g.setColour(Colors::Knob::textBoxBackground);
+    g.fillRoundedRectangle(
+            textEditor.getLocalBounds().reduced(4, 0).toFloat(), 4.0f);
 }
 
 MainLookAndFeel::MainLookAndFeel()
