@@ -125,6 +125,9 @@ bool DelayAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) con
     const auto mainIn = layouts.getMainInputChannelSet();
     const auto mainOut = layouts.getMainOutputChannelSet();
 
+    //DBG("isBusesLayoutSupported, in: " << mainIn.getDescription()
+    //        << ", out: " << mainOut.getDescription());
+
     if (mainIn == mono && mainOut == mono) { return true; }
     if (mainIn == mono && mainOut == stereo) { return true; }
     if (mainIn == stereo && mainOut == stereo) { return true; }
@@ -163,54 +166,35 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     float* outputDataL = mainOutput.getWritePointer(0);
     float* outputDataR = mainOutput.getWritePointer(isMainOutputStereo ? 1 : 0);
 
-    if (isMainOutputStereo) {
-        for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
-            params.smoothen();
+    for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
+        params.smoothen();
 
-            float delayInSamples = params.delayTime / 1000.0f * sampleRate;
-            delayLine.setDelay(delayInSamples);
+        float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+        delayLine.setDelay(delayInSamples);
 
-            float dryL = inputDataL[sample];
-            float dryR = inputDataR[sample];
+        float dryL = inputDataL[sample];
+        float dryR = inputDataR[sample];
 
-            float mono = (dryL + dryR) * 0.5f;
+        float mono = (dryL + dryR) * 0.5f;
 
-            delayLine.pushSample(0, mono*params.panL + feedbackR);
-            delayLine.pushSample(1, mono*params.panR + feedbackL);
+        delayLine.pushSample(0, mono*params.panL + feedbackR);
+        delayLine.pushSample(1, mono*params.panR + feedbackL);
 
-            float wetL = delayLine.popSample(0);
-            float wetR = delayLine.popSample(1);
+        float wetL = delayLine.popSample(0);
+        float wetR = delayLine.popSample(1);
 
-            // multi-tap delay
-            //wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
-            //wetR += delayLine.popSample(1, delayInSamples * 2.0f, false) * 0.7f;
+        // multi-tap delay
+        //wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
+        //wetR += delayLine.popSample(1, delayInSamples * 2.0f, false) * 0.7f;
 
-            feedbackL = wetL * params.feedback;
-            feedbackR = wetR * params.feedback;
+        feedbackL = wetL * params.feedback;
+        feedbackR = wetR * params.feedback;
 
-            float mixL = dryL + wetL * params.mix;
-            float mixR = dryR + wetR * params.mix;
+        float mixL = dryL + wetL * params.mix;
+        float mixR = dryR + wetR * params.mix;
 
-            outputDataL[sample] = mixL * params.gain;
-            outputDataR[sample] = mixR * params.gain;
-        }
-    } else {
-        // this is the processing loop for mono
-        for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
-            params.smoothen();
-
-            float delayInSamples = params.delayTime / 1000.0f * sampleRate;
-            delayLine.setDelay(delayInSamples);
-
-            float dry = inputDataL[sample];
-            delayLine.pushSample(0, dry + feedbackL);
-
-            float wet = delayLine.popSample(0);
-            feedbackL = wet * params.feedback;
-
-            float mix = dry + wet * params.mix;
-            outputDataL[sample] = mix * params.gain;
-        }
+        outputDataL[sample] = mixL * params.gain;
+        outputDataR[sample] = mixR * params.gain;
     }
 
     #if JUCE_DEBUG

@@ -24,12 +24,12 @@ public:
     float delayTime = 0.0f;
     float mix = 1.0f;
     float feedback = 0.0f;
+    float panL = 0.0f;
+    float panR = 1.0f;
 
     static constexpr float minDelayTime = 5.0f;
     static constexpr float maxDelayTime = 5000.0f;
 
-    float panL = 0.0f;
-    float panR = 1.0f;
 private:
     juce::AudioParameterFloat* gainParam;
     juce::LinearSmoothedValue<float> gainSmoother;

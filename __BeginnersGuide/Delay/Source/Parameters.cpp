@@ -2,7 +2,7 @@
 #include "DSP.h"
 
 template<typename T>
-static void castParameter(juce::AudioProcessorValueTreeState& apvts, 
+static void castParameter(juce::AudioProcessorValueTreeState& apvts,
                           const juce::ParameterID& id, T& destination)
 {
     destination = dynamic_cast<T>(apvts.getParameter(id.getParamID()));
@@ -87,8 +87,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
         "Feedback",
         juce::NormalisableRange<float>(-100.0f, 100.0f, 1.0f),
         0.0f,
-        juce::AudioParameterFloatAttributes()
-            .withStringFromValueFunction(stringFromPercent)
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
@@ -96,8 +95,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
         "Stereo",
         juce::NormalisableRange<float>(-100.0f, 100.0f, 1.0f),
         0.0f,
-        juce::AudioParameterFloatAttributes()
-            .withStringFromValueFunction(stringFromPercent)
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
     ));
 
     return layout;
@@ -112,7 +110,6 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
 
     mixSmoother.reset(sampleRate, duration);
     feedbackSmoother.reset(sampleRate, duration);
-
     stereoSmoother.reset(sampleRate, duration);
 }
 
@@ -131,7 +128,6 @@ void Parameters::reset() noexcept
 
     panL = 0.0f;
     panR = 1.0f;
-
     stereoSmoother.setCurrentAndTargetValue(stereoParam->get() * 0.01f);
 }
 
@@ -146,7 +142,6 @@ void Parameters::update() noexcept
 
     mixSmoother.setTargetValue(mixParam->get() * 0.01f);
     feedbackSmoother.setTargetValue(feedbackParam->get() * 0.01f);
-
     stereoSmoother.setTargetValue(stereoParam->get() * 0.01f);
 }
 
