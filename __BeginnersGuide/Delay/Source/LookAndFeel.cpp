@@ -5,9 +5,7 @@ const juce::Typeface::Ptr Fonts::typeface = juce::Typeface::createSystemTypeface
 
 juce::Font Fonts::getFont(float height)
 {
-    return juce::FontOptions(typeface)
-                    .withMetricsKind(juce::TypefaceMetricsKind::legacy)
-                    .withHeight(height);
+    return juce::Font(typeface).withHeight(height);
 }
 
 RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()

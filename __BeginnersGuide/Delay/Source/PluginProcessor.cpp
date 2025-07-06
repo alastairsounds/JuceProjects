@@ -160,6 +160,10 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float wetL = delayLine.popSample(0);
         float wetR = delayLine.popSample(1);
 
+        // multi-tap delay
+        //wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
+        //wetR += delayLine.popSample(1, delayInSamples * 2.0f, false) * 0.7f;
+
         feedbackL = wetL * params.feedback;
         feedbackR = wetR * params.feedback;
 
