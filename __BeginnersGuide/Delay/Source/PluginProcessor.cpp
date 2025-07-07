@@ -182,13 +182,11 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
 
-        if (params.lowCut != lastLowCut)
-        {
+        if (params.lowCut != lastLowCut) {
             lowCutFilter.setCutoffFrequency(params.lowCut);
             lastLowCut = params.lowCut;
         }
-        if (params.highCut != lastHighCut)
-        {
+        if (params.highCut != lastHighCut) {
             highCutFilter.setCutoffFrequency(params.highCut);
             lastHighCut = params.highCut;
         }
@@ -211,6 +209,7 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         feedbackL = wetL * params.feedback;
         feedbackL = lowCutFilter.processSample(0, feedbackL);
         feedbackL = highCutFilter.processSample(0, feedbackL);
+
         feedbackR = wetR * params.feedback;
         feedbackR = lowCutFilter.processSample(1, feedbackR);
         feedbackR = highCutFilter.processSample(1, feedbackR);

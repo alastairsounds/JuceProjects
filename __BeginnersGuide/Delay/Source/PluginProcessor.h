@@ -68,6 +68,7 @@ private:
 
     juce::dsp::StateVariableTPTFilter<float> lowCutFilter;
     juce::dsp::StateVariableTPTFilter<float> highCutFilter;
+
     float lastLowCut = -1.0f;
     float lastHighCut = -1.0f;
 

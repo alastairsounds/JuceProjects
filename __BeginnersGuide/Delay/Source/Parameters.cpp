@@ -2,7 +2,7 @@
 #include "DSP.h"
 
 template<typename T>
-static void castParameter(juce::AudioProcessorValueTreeState& apvts,
+static void castParameter(juce::AudioProcessorValueTreeState& apvts, 
                           const juce::ParameterID& id, T& destination)
 {
     destination = dynamic_cast<T>(apvts.getParameter(id.getParamID()));
@@ -193,7 +193,6 @@ void Parameters::update() noexcept
     mixSmoother.setTargetValue(mixParam->get() * 0.01f);
     feedbackSmoother.setTargetValue(feedbackParam->get() * 0.01f);
     stereoSmoother.setTargetValue(stereoParam->get() * 0.01f);
-
     lowCutSmoother.setTargetValue(lowCutParam->get());
     highCutSmoother.setTargetValue(highCutParam->get());
 }
