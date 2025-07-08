@@ -165,8 +165,7 @@ ButtonLookAndFeel::ButtonLookAndFeel()
     setColour(juce::TextButton::textColourOffId, Colors::Button::text);
     setColour(juce::TextButton::textColourOnId, Colors::Button::textToggled);
     setColour(juce::TextButton::buttonColourId, Colors::Button::background);
-    setColour(juce::TextButton::buttonOnColourId,
-              Colors::Button::backgroundToggled);
+    setColour(juce::TextButton::buttonOnColourId, Colors::Button::backgroundToggled);
 }
 
 void ButtonLookAndFeel::drawButtonBackground(

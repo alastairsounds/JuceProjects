@@ -18,11 +18,6 @@ DelayAudioProcessorEditor::DelayAudioProcessorEditor (DelayAudioProcessor& p)
     delayGroup.addAndMakeVisible(delayTimeKnob);
     delayGroup.addChildComponent(delayNoteKnob);
     addAndMakeVisible(delayGroup);
-    tempoSyncButton.setButtonText("Sync");
-    tempoSyncButton.setClickingTogglesState(true);
-    tempoSyncButton.setBounds(0, 0, 70, 27);
-    tempoSyncButton.setLookAndFeel(ButtonLookAndFeel::get());
-    delayGroup.addAndMakeVisible(tempoSyncButton);
 
     feedbackGroup.setText("Feedback");
     feedbackGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
@@ -38,13 +33,20 @@ DelayAudioProcessorEditor::DelayAudioProcessorEditor (DelayAudioProcessor& p)
     outputGroup.addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
+    tempoSyncButton.setButtonText("Sync");
+    tempoSyncButton.setClickingTogglesState(true);
+    tempoSyncButton.setBounds(0, 0, 70, 27);
+    tempoSyncButton.setLookAndFeel(ButtonLookAndFeel::get());
+    delayGroup.addAndMakeVisible(tempoSyncButton);
+
     setSize(500, 330);
 
     //gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::green);
 
+    setLookAndFeel(&mainLF);
+
     updateDelayKnobs(audioProcessor.params.tempoSyncParam->get());
     audioProcessor.params.tempoSyncParam->addListener(this);
-    setLookAndFeel(&mainLF);
 }
 
 DelayAudioProcessorEditor::~DelayAudioProcessorEditor()
@@ -109,7 +111,8 @@ void DelayAudioProcessorEditor::parameterValueChanged(int, float value)
     if (juce::MessageManager::getInstance()->isThisTheMessageThread()) {
         updateDelayKnobs(value != 0.0f);
     } else {
-        juce::MessageManager::callAsync([this, value]{
+        juce::MessageManager::callAsync([this, value]
+        {
             updateDelayKnobs(value != 0.0f);
         });
     }

@@ -17,8 +17,8 @@
 //==============================================================================
 /**
 */
-class DelayAudioProcessorEditor : public juce::AudioProcessorEditor,
-                                  private juce::AudioProcessorParameter::Listener
+class DelayAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                   private juce::AudioProcessorParameter::Listener
 {
 public:
     DelayAudioProcessorEditor (DelayAudioProcessor&);
@@ -29,15 +29,16 @@ public:
     void resized() override;
 
 private:
+    void parameterValueChanged(int, float) override;
+    void parameterGestureChanged(int, bool) override { }
+
+    void updateDelayKnobs(bool tempoSyncActive);
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     DelayAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessorEditor)
-
-    void parameterValueChanged(int, float) override;
-    void parameterGestureChanged(int, bool) override {}
-    void updateDelayKnobs(bool tempoSyncActive);
 
     RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID, true };
     RotaryKnob mixKnob { "Mix", audioProcessor.apvts, mixParamID };

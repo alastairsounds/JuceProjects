@@ -1,6 +1,6 @@
 #include "Tempo.h"
 
-static std::array<double, 16> noteLengthMultipliers = 
+static std::array<double, 16> noteLengthMultipliers =
 {
     0.125,        //  0 = 1/32
     0.5 / 3.0,    //  1 = 1/16 triplet
@@ -32,7 +32,6 @@ void Tempo::update(const juce::AudioPlayHead* playhead) noexcept
     if (playhead == nullptr) { return; }
 
     const auto opt = playhead->getPosition();
-
     if (!opt.hasValue()) { return; }
 
     const auto& pos = *opt;

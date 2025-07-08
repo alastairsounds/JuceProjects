@@ -164,6 +164,7 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
 
     params.update();
     tempo.update(getPlayHead());
+
     float syncedTime = float(tempo.getMillisecondsForNoteLength(params.delayNote));
     if (syncedTime > Parameters::maxDelayTime) {
         syncedTime = Parameters::maxDelayTime;
