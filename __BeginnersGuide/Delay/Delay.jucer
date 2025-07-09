@@ -10,6 +10,8 @@
       <FILE id="GHNskl" name="Noise.png" compile="0" resource="1" file="../../../../../../GitClones/BeginnerBookAudioProgramming/Resources/Noise.png"/>
     </GROUP>
     <GROUP id="{22D25ECD-9B77-410F-7E89-B86D0FACC91E}" name="Source">
+      <FILE id="FJlKhR" name="DelayLine.cpp" compile="1" resource="0" file="Source/DelayLine.cpp"/>
+      <FILE id="PuXClI" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
       <FILE id="jaWMBZ" name="DSP.h" compile="0" resource="0" file="Source/DSP.h"/>
       <FILE id="devwCe" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
       <FILE id="RBgYYT" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
