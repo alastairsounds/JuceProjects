@@ -102,6 +102,7 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     double numSamples = Parameters::maxDelayTime / 1000.0 * sampleRate;
     int maxDelayInSamples = int(std::ceil(numSamples));
+
     delayLineL.setMaximumDelayInSamples(maxDelayInSamples);
     delayLineR.setMaximumDelayInSamples(maxDelayInSamples);
     delayLineL.reset();

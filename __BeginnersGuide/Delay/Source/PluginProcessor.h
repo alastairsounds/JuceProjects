@@ -9,9 +9,9 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "DelayLine.h"
 #include "Parameters.h"
 #include "Tempo.h"
+#include "DelayLine.h"
 
 //==============================================================================
 /**
