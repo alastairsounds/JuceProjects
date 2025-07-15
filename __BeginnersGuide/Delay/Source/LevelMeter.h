@@ -29,12 +29,20 @@ private:
     float dbLevelL;
     float dbLevelR;
 
+    static constexpr int refreshRate = 60;
+
+    float decay = 0.0f;
+    float levelL = clampLevel;
+    float levelR = clampLevel;
+
     int positionForLevel(float dbLevel) const noexcept
     {
         return int(std::round(juce::jmap(dbLevel, maxdB, mindB, maxPos, minPos)));
     }
 
     void drawLevel(juce::Graphics& g, float level, int x, int width);
+
+    void updateLevel(float newLevel, float& smoothedLevel, float& leveldB) const;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LevelMeter)
 };
