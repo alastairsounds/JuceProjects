@@ -13,6 +13,7 @@
 #include "Parameters.h"
 #include "RotaryKnob.h"
 #include "LookAndFeel.h"
+#include "LevelMeter.h"
 
 //==============================================================================
 /**
@@ -58,4 +59,6 @@ private:
     juce::GroupComponent delayGroup, feedbackGroup, outputGroup;
 
     MainLookAndFeel mainLF;
+
+    LevelMeter meter;
 };

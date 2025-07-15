@@ -13,6 +13,8 @@
       <FILE id="FJlKhR" name="DelayLine.cpp" compile="1" resource="0" file="Source/DelayLine.cpp"/>
       <FILE id="PuXClI" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
       <FILE id="jaWMBZ" name="DSP.h" compile="0" resource="0" file="Source/DSP.h"/>
+      <FILE id="s79338" name="LevelMeter.cpp" compile="1" resource="0" file="Source/LevelMeter.cpp"/>
+      <FILE id="oYhzti" name="LevelMeter.h" compile="0" resource="0" file="Source/LevelMeter.h"/>
       <FILE id="devwCe" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
       <FILE id="RBgYYT" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
       <FILE id="e95Fju" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
