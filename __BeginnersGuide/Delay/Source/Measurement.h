@@ -12,8 +12,7 @@ struct Measurement
     void updateIfGreater(float newValue) noexcept
     {
         auto oldValue = value.load();
-        while (newValue > oldValue &&
-               !value.compare_exchange_weak(oldValue, newValue));
+        while (newValue > oldValue && !value.compare_exchange_weak(oldValue, newValue));
     }
 
     float readAndReset() noexcept

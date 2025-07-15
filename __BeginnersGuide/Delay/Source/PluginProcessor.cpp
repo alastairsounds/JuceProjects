@@ -242,12 +242,12 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         maxR = std::max(maxR, std::abs(outR));
     }
 
-    levelL.updateIfGreater(maxL);
-    levelR.updateIfGreater(maxR);
-
     #if JUCE_DEBUG
     protectYourEars(buffer);
     #endif
+
+    levelL.updateIfGreater(maxL);
+    levelR.updateIfGreater(maxR);
 }
 
 //==============================================================================

@@ -2,9 +2,7 @@
 #include "LevelMeter.h"
 #include "LookAndFeel.h"
 
-//==============================================================================
-LevelMeter::LevelMeter(Measurement& measurementL_,
-                       Measurement& measurementR_)
+LevelMeter::LevelMeter(Measurement& measurementL_, Measurement& measurementR_)
     : measurementL(measurementL_), measurementR(measurementR_),
       dbLevelL(clampdB), dbLevelR(clampdB)
 {
@@ -22,11 +20,11 @@ void LevelMeter::paint (juce::Graphics& g)
     const auto bounds = getLocalBounds();
 
     g.fillAll(Colors::LevelMeter::background);
-    g.setFont(Fonts::getFont(10.0f));
 
     drawLevel(g, dbLevelL, 0, 7);
     drawLevel(g, dbLevelR, 9, 7);
 
+    g.setFont(Fonts::getFont(10.0f));
     for (float db = maxdB; db >= mindB; db -= stepdB) {
         int y = positionForLevel(db);
 
@@ -68,15 +66,13 @@ void LevelMeter::drawLevel(juce::Graphics& g, float level, int x, int width)
     }
 }
 
-void LevelMeter::updateLevel(float newLevel, float& smoothedLevel,
-                             float& leveldB) const
+void LevelMeter::updateLevel(float newLevel, float& smoothedLevel, float& leveldB) const
 {
     if (newLevel > smoothedLevel) {
-        smoothedLevel = newLevel;
+        smoothedLevel = newLevel;  // instantaneous attack
     } else {
         smoothedLevel += (newLevel - smoothedLevel) * decay;
     }
-
     if (smoothedLevel > clampLevel) {
         leveldB = juce::Decibels::gainToDecibels(smoothedLevel);
     } else {
