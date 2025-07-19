@@ -126,6 +126,11 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     levelL.reset();
     levelR.reset();
+
+    delayInSamples = 0.0f;
+    targetDelay = 0.0f;
+    xfade = 0.0f;
+    xfadeInc = static_cast<float>(1.0 / (0.05 * sampleRate));  // 50 ms
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -194,8 +199,17 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
 
-        float delayTime = params.tempoSync ? syncedTime : params.delayTime;
-        float delayInSamples = delayTime / 1000.0f * sampleRate;
+        if (xfade == 0.0f) {
+            float delayTime = params.tempoSync ? syncedTime : params.delayTime;
+            targetDelay = delayTime / 1000.0f * sampleRate;
+
+            if (delayInSamples == 0.0f) {  // first time
+                delayInSamples = targetDelay;
+            }
+            else if (targetDelay != delayInSamples) {  // start crossfade
+                xfade = xfadeInc;
+            }
+        }
 
         if (params.lowCut != lastLowCut) {
             lowCutFilter.setCutoffFrequency(params.lowCut);
@@ -216,6 +230,20 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
 
         float wetL = delayLineL.read(delayInSamples);
         float wetR = delayLineR.read(delayInSamples);
+
+        if (xfade > 0.0f) {  // crossfading?
+            float newL = delayLineL.read(targetDelay);
+            float newR = delayLineR.read(targetDelay);
+
+            wetL = (1.0f - xfade) * wetL + xfade * newL;
+            wetR = (1.0f - xfade) * wetR + xfade * newR;
+
+            xfade += xfadeInc;
+            if (xfade >= 1.0f) {
+                delayInSamples = targetDelay;
+                xfade = 0.0f;
+            }
+        }
 
         // multi-tap delay
         //wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
