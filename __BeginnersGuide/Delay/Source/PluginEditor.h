@@ -61,4 +61,10 @@ private:
     MainLookAndFeel mainLF;
 
     LevelMeter meter;
+
+    juce::ImageButton bypassButton;
+
+    juce::AudioProcessorValueTreeState::ButtonAttachment bypassAttachment {
+        audioProcessor.apvts, bypassParamID.getParamID(), bypassButton
+    };
 };

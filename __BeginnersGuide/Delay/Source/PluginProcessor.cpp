@@ -272,6 +272,11 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float outL = mixL * params.gain;
         float outR = mixR * params.gain;
 
+        if (params.bypassed) {
+            outL = dryL;
+            outR = dryR;
+        }
+
         outputDataL[sample] = outL;
         outputDataR[sample] = outR;
 
@@ -319,4 +324,9 @@ void DelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new DelayAudioProcessor();
+}
+
+juce::AudioProcessorParameter* DelayAudioProcessor::getBypassParameter() const
+{
+    return params.bypassParam;
 }
