@@ -57,6 +57,8 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorParameter* getBypassParameter() const override;
+
     juce::AudioProcessorValueTreeState apvts {
         *this, nullptr, "Parameters", Parameters::createParameterLayout()
     };
@@ -64,8 +66,6 @@ public:
     Parameters params;
 
     Measurement levelL, levelR;
-
-    juce::AudioProcessorParameter* getBypassParameter() const override;
 
 private:
     DelayLine delayLineL, delayLineR;
@@ -81,6 +81,15 @@ private:
 
     Tempo tempo;
 
+    /*
+    // For crossfading:
+    float delayInSamples = 0.0f;
+    float targetDelay = 0.0f;
+    float xfade = 0.0f;
+    float xfadeInc = 0.0f;
+    */
+
+    // For ducking:
     float delayInSamples = 0.0f;
     float targetDelay = 0.0f;
     float fade = 0.0f;

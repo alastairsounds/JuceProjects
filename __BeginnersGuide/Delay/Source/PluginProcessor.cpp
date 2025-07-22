@@ -127,17 +127,22 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     levelL.reset();
     levelR.reset();
 
+    /*
+    // For crossfading:
     delayInSamples = 0.0f;
     targetDelay = 0.0f;
+    xfade = 0.0f;
+    xfadeInc = static_cast<float>(1.0 / (0.05 * sampleRate));  // 50 ms
+    */
 
+    // For ducking:
+    delayInSamples = 0.0f;
+    targetDelay = 0.0f;
     fade = 1.0f;
     fadeTarget = 1.0f;
-
     coeff = 1.0f - std::exp(-1.0f / (0.05f * float(sampleRate)));
-
     wait = 0.0f;
     waitInc = 1.0f / (0.3f * float(sampleRate));  // 300 ms
-
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -206,17 +211,33 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
 
+        //float delayTime = params.tempoSync ? syncedTime : params.delayTime;
+        //float delayInSamples = delayTime / 1000.0f * sampleRate;
+
+        /*
+        // For crossfading:
+        if (xfade == 0.0f) {
+            float delayTime = params.tempoSync ? syncedTime : params.delayTime;
+            targetDelay = delayTime / 1000.0f * sampleRate;
+
+            if (delayInSamples == 0.0f) {  // first time
+                delayInSamples = targetDelay;
+            } else if (targetDelay != delayInSamples) {  // start crossfade
+                xfade = xfadeInc;
+            }
+        }
+        */
+
+        // For ducking:
         float delayTime = params.tempoSync ? syncedTime : params.delayTime;
         float newTargetDelay = delayTime / 1000.0f * sampleRate;
-
         if (newTargetDelay != targetDelay) {
             targetDelay = newTargetDelay;
-            if (delayInSamples == 0.0f) {
+            if (delayInSamples == 0.0f) {  // first time
                 delayInSamples = targetDelay;
-            }
-            else {
-                wait = waitInc;
-                fadeTarget = 0.0f;
+            } else {
+                wait = waitInc;     // start counter
+                fadeTarget = 0.0f;  // fade out
             }
         }
 
@@ -240,6 +261,28 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float wetL = delayLineL.read(delayInSamples);
         float wetR = delayLineR.read(delayInSamples);
 
+        // multi-tap delay
+        //wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
+        //wetR += delayLine.popSample(1, delayInSamples * 2.0f, false) * 0.7f;
+
+        /*
+        // For crossfading:
+        if (xfade > 0.0f) {  // crossfading?
+            float newL = delayLineL.read(targetDelay);
+            float newR = delayLineR.read(targetDelay);
+
+            wetL = (1.0f - xfade) * wetL + xfade * newL;
+            wetR = (1.0f - xfade) * wetR + xfade * newR;
+
+            xfade += xfadeInc;
+            if (xfade >= 1.0f) {
+                delayInSamples = targetDelay;
+                xfade = 0.0f;
+            }
+        }
+        */
+
+        // For ducking:
         fade += (fadeTarget - fade) * coeff;
 
         wetL *= fade;
@@ -250,13 +293,9 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
             if (wait >= 1.0f) {
                 delayInSamples = targetDelay;
                 wait = 0.0f;
-                fadeTarget = 1.0f;
+                fadeTarget = 1.0f;  // fade in
             }
         }
-
-        // multi-tap delay
-        //wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
-        //wetR += delayLine.popSample(1, delayInSamples * 2.0f, false) * 0.7f;
 
         feedbackL = wetL * params.feedback;
         feedbackL = lowCutFilter.processSample(0, feedbackL);
@@ -276,6 +315,14 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
             outL = dryL;
             outR = dryR;
         }
+
+        // For visualizing crossfades:
+        //outL = xfade;
+        //outR = xfade;
+
+        // For visualizing ducking:
+        //outL = fade;
+        //outR = fade;
 
         outputDataL[sample] = outL;
         outputDataR[sample] = outR;

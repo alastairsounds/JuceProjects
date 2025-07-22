@@ -236,6 +236,9 @@ void Parameters::smoothen() noexcept
 {
     gain = gainSmoother.getNextValue();
 
+    //delayTime += (targetDelayTime - delayTime) * coeff;
+
+    // For crossfading and ducking:
     delayTime = targetDelayTime;
 
     mix = mixSmoother.getNextValue();
