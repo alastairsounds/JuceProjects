@@ -33,7 +33,8 @@ IDEWorkspaceChecks.plist
 UserInterfaceState.xcuserstate
 xcschememanagement.plist
 *.xcscheme
-.vscode
+.vscode/
+!__BeginnersGuide/JX11/.vscode/
 *.xcworkspace
 *.DS_Store
 *.entitlements
@@ -47,7 +48,6 @@ xcuserdata
 .idea
 **/cmake-build*
 
-.vscode
 /build
 
 CMakeUserPresets.json
