@@ -5,6 +5,8 @@
               pluginCode="JX11" cppLanguageStandard="17">
   <MAINGROUP id="oJCTC2" name="JX11">
     <GROUP id="{06D34FFE-5C7B-FE1F-1632-1023D927248F}" name="Source">
+      <FILE id="bvpn9N" name="NoiseGenerator.h" compile="0" resource="0"
+            file="Source/NoiseGenerator.h"/>
       <FILE id="R369jL" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
       <FILE id="cjCI4n" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
       <FILE id="InIujw" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "NoiseGenerator.h"
 #include "Voice.h"
 
 class Synth
@@ -17,6 +18,7 @@ public:
 private:
     float sampleRate;
     Voice voice;
+    NoiseGenerator noiseGen;
 
     void noteOn(int note, int velocity);
     void noteOff(int note);
