@@ -1,4 +1,5 @@
 #include "Synth.h"
+#include "Utils.h"
 
 Synth::Synth()
 {
@@ -38,6 +39,8 @@ void Synth::render(float** outputBuffers, int sampleCount)
         if (outputBufferRight != nullptr) {
             outputBufferRight[sample] = output;
         }
+        protectYourEars(outputBufferLeft, sampleCount);
+        protectYourEars(outputBufferRight, sampleCount);
     }
 }
 
