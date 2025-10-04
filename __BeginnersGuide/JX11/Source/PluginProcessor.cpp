@@ -148,12 +148,13 @@ void JX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     splitBufferByEvents(buffer, midiMessages);
 }
 
-void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer,
-                                             juce::MidiBuffer& midiMessages)
+void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     int bufferOffset = 0;
 
+    // Loop through the MIDI messages, which are sorted by samplePosition.
     for (const auto metadata : midiMessages) {
+
         // Render the audio that happens before this event (if any).
         int samplesThisSegment = metadata.samplePosition - bufferOffset;
         if (samplesThisSegment > 0) {
@@ -164,7 +165,7 @@ void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer,
         // Handle the event. Ignore MIDI messages such as sysex.
         if (metadata.numBytes <= 3) {
             uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
-            uint8_t data2 = (metadata.numBytes >= 3) ? metadata.data[2] : 0;
+            uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
             handleMIDI(metadata.data[0], data1, data2);
         }
     }
@@ -181,11 +182,14 @@ void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer,
 
 void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
 {
+//    char s[16];
+//    snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
+//    DBG(s);
+
     synth.midiMessage(data0, data1, data2);
 }
 
-void JX11AudioProcessor::render(
-    juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)
+void JX11AudioProcessor::render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)
 {
     float* outputBuffers[2] = { nullptr, nullptr };
     outputBuffers[0] = buffer.getWritePointer(0) + bufferOffset;

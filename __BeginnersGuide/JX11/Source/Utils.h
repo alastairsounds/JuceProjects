@@ -2,7 +2,7 @@
 #include <cmath>
 #include <JuceHeader.h>
 
-inline void protectYourEars(float* buffer, int sampleCount) 
+inline void protectYourEars(float* buffer, int sampleCount)
 {
     if (buffer == nullptr) { return; }
     bool firstWarning = true;
@@ -10,12 +10,12 @@ inline void protectYourEars(float* buffer, int sampleCount)
         float x = buffer[i];
         bool silence = false;
         if (std::isnan(x)) {
-            DBG("!!! WARNING: nan dedected in audio buffer, silencing !!!");
+            DBG("!!! WARNING: nan detected in audio buffer, silencing !!!");
             silence = true;
         } else if (std::isinf(x)) {
-            DBG("!!! WARNING: inf dedected in audio buffer, silencing !!!");
+            DBG("!!! WARNING: inf detected in audio buffer, silencing !!!");
             silence = true;
-        } else if (x < -2.0f || x > 2.0f) { // screaming feedback
+        } else if (x < -2.0f || x > 2.0f) {  // screaming feedback
             DBG("!!! WARNING: sample out of range, silencing !!!");
             silence = true;
         } else if (x < -1.0f) {
@@ -35,5 +35,5 @@ inline void protectYourEars(float* buffer, int sampleCount)
             memset(buffer, 0, sampleCount * sizeof(float));
             return;
         }
-    } 
+    }
 }

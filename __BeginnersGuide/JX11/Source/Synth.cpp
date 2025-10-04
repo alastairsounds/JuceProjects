@@ -31,22 +31,24 @@ void Synth::render(float** outputBuffers, int sampleCount)
         float noise = noiseGen.nextValue();
 
         float output = 0.0f;
+
         if (voice.note > 0) {
-            output = noise * (voice.velocity / 127.0f) * 0.5;
+            output = noise * (voice.velocity / 127.0f) * 0.5f;
         }
 
         outputBufferLeft[sample] = output;
         if (outputBufferRight != nullptr) {
             outputBufferRight[sample] = output;
         }
-        protectYourEars(outputBufferLeft, sampleCount);
-        protectYourEars(outputBufferRight, sampleCount);
     }
+
+    protectYourEars(outputBufferLeft, sampleCount);
+    protectYourEars(outputBufferRight, sampleCount);
 }
 
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 {
-    switch (data0 & 0XF0) {
+    switch (data0 & 0xF0) {
         // Note off
         case 0x80:
             noteOff(data1 & 0x7F);
