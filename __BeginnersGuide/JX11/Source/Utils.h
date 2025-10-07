@@ -1,5 +1,4 @@
 #pragma once
-#include <JuceHeader.h>
 
 inline void protectYourEars(float* buffer, int sampleCount)
 {

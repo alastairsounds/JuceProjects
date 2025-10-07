@@ -1,5 +1,4 @@
 #pragma once
-#include <cmath>
 
 const float TWO_PI = 6.2831853071795864f;
 
@@ -22,7 +21,7 @@ public:
     {
         float sinx = dsin * sin0 - sin1;
         sin1 = sin0;
-        sin0 = sinx; 
+        sin0 = sinx;
         return sinx;
     }
 

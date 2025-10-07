@@ -83,6 +83,5 @@ void Synth::noteOff(int note)
 {
     if (voice.note == note) {
         voice.note = 0;
-        voice.osc.reset();
     }
 }

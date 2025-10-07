@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Oscillator.h"
 
 struct Voice
