@@ -71,11 +71,10 @@ void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 void Synth::noteOn(int note, int velocity)
 {
     voice.note = note;
-    
+    float freq = 261.63f;
+
     voice.osc.amplitude = (velocity / 127.0f) * 0.5f;
-    voice.osc.freq = 261.63f;;
-    voice.osc.sampleRate = sampleRate;
-    voice.osc.phaseOffset = 0.0f;
+    voice.osc.inc = freq / sampleRate;
     voice.osc.reset();
 }
 
