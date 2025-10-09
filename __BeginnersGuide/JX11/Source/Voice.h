@@ -5,8 +5,8 @@
 struct Voice
 {
     int note;
-    Oscillator osc;
     float saw;
+    Oscillator osc;
 
     void reset()
     {
