@@ -7,6 +7,8 @@
 class Synth
 {
 public:
+    float noiseMix;
+
     Synth();
 
     void allocateResources(double sampleRate, int samplesPerBlock);
