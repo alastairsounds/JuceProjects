@@ -47,7 +47,8 @@ namespace ParameterID
 //==============================================================================
 /**
 */
-class JX11AudioProcessor  : public juce::AudioProcessor
+class JX11AudioProcessor  : public juce::AudioProcessor,
+                            private juce::ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -120,10 +121,19 @@ private:
     juce::AudioParameterFloat* outputLevelParam;
     juce::AudioParameterChoice* polyModeParam;
 
+    std::atomic<bool> parametersChanged { false };
+
     void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
     void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
     void render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset);
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+
+    void valueTreePropertyChanged(juce::ValueTree&, const juce::Identifier&) override
+    {
+        parametersChanged.store(true);
+    };
+
+    void update();
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessor)
