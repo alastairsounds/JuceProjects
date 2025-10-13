@@ -9,8 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Preset.h"
 #include "Synth.h"
+#include "Preset.h"
 
 namespace ParameterID
 {
@@ -42,6 +42,7 @@ namespace ParameterID
     PARAMETER_ID(tuning)
     PARAMETER_ID(outputLevel)
     PARAMETER_ID(polyMode)
+
     #undef PARAMETER_ID
 }
 
@@ -53,8 +54,6 @@ class JX11AudioProcessor  : public juce::AudioProcessor,
 {
 public:
     //==============================================================================
-    juce::AudioProcessorValueTreeState apvts { *this, nullptr, "Parameters", createParameterLayout() };
-
     JX11AudioProcessor();
     ~JX11AudioProcessor() override;
 
@@ -92,7 +91,28 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState apvts { *this, nullptr, "Parameters", createParameterLayout() };
+
 private:
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+
+    void valueTreePropertyChanged(juce::ValueTree&, const juce::Identifier&) override
+    {
+        parametersChanged.store(true);
+    }
+
+    std::atomic<bool> parametersChanged { false };
+
+    void update();
+    void createPrograms();
+
+    void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
+    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
+    void render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset);
+
+    std::vector<Preset> presets;
+    int currentProgram;
+
     Synth synth;
 
     juce::AudioParameterFloat* oscMixParam;
@@ -121,24 +141,6 @@ private:
     juce::AudioParameterFloat* tuningParam;
     juce::AudioParameterFloat* outputLevelParam;
     juce::AudioParameterChoice* polyModeParam;
-
-    std::atomic<bool> parametersChanged { false };
-
-    void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
-    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
-    void render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset);
-    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-
-    void valueTreePropertyChanged(juce::ValueTree&, const juce::Identifier&) override
-    {
-        parametersChanged.store(true);
-    };
-
-    void update();
-    void createPrograms();
-
-    std::vector<Preset> presets;
-    int currentProgram;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessor)
