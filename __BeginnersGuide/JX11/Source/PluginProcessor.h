@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Preset.h"
 #include "Synth.h"
 
 namespace ParameterID
@@ -134,6 +135,10 @@ private:
     };
 
     void update();
+    void createPrograms();
+
+    std::vector<Preset> presets;
+    int currentProgram;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessor)
