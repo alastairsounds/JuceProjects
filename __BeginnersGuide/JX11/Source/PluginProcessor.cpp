@@ -226,6 +226,11 @@ void JX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
 
 void JX11AudioProcessor::update()
 {
+    float sampleRate = float(getSampleRate());
+    float decayTime = envDecayParam->get() / 100.0f * 5.0f;
+    float decaySamples = sampleRate * decayTime;
+    synth.envDecay = std::exp(std::log(SILENCE) / decaySamples);
+
     float noiseMix = noiseParam->get() / 100.0f;
     noiseMix *= noiseMix;
     synth.noiseMix = noiseMix * 0.06f;
