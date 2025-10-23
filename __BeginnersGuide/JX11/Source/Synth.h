@@ -19,6 +19,8 @@ public:
 
     float envAttack, envDecay, envSustain, envRelease;
 
+    float oscMix;
+
 private:
     void noteOn(int note, int velocity);
     void noteOff(int note);
