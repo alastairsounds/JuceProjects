@@ -15,6 +15,7 @@ struct Voice
         note = 0;
         saw = 0.0f;
         osc.reset();
+        env.reset();
     }
 
     float render(float input)
@@ -25,6 +26,12 @@ struct Voice
         float output = saw + input;
 
         float envelope = env.nextValue();
-        return saw * envelope;
+        return output * envelope;
+        // return envelope; //* DEBUG to see envelope
+    }
+
+    void release()
+    {
+        env.release();
     }
 };
