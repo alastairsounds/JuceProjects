@@ -29,6 +29,7 @@ void Synth::render(float** outputBuffers, int sampleCount)
 
     for (int sample = 0; sample < sampleCount; ++sample) {
         float noise = noiseGen.nextValue() * noiseMix;
+
         float output = 0.0f;
 
         if (voice.env.isActive()) {

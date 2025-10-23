@@ -5,11 +5,12 @@ const float SILENCE = 0.0001f;
 class Envelope
 {
 public:
-    float level;
-    float attackMultiplier;
-    float decayMultiplier;
-    float sustainLevel;
-    float releaseMultiplier;
+    void reset()
+    {
+        level = 0.0f;
+        target = 0.0f;
+        multiplier = 0.0f;
+    }
 
     float nextValue()
     {
@@ -21,19 +22,6 @@ public:
         }
 
         return level;
-    }
-
-    void reset()
-    {
-        level = 0.0f;
-        target = 0.0f;
-        multiplier = 0.0f;
-    }
-
-    void release()
-    {
-        target = 0.0f;
-        multiplier = releaseMultiplier;
     }
 
     inline bool isActive() const
@@ -52,6 +40,19 @@ public:
         target = 2.0f;
         multiplier = attackMultiplier;
     }
+
+    void release()
+    {
+        target = 0.0f;
+        multiplier = releaseMultiplier;
+    }
+
+    float attackMultiplier;
+    float decayMultiplier;
+    float sustainLevel;
+    float releaseMultiplier;
+
+    float level;
 
 private:
     float target;

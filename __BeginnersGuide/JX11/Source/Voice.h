@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Envelope.h"
 #include "Oscillator.h"
+#include "Envelope.h"
 
 struct Voice
 {
     int note;
     float saw;
+
     Oscillator osc;
     Envelope env;
 
@@ -27,7 +28,6 @@ struct Voice
 
         float envelope = env.nextValue();
         return output * envelope;
-        // return envelope; //* DEBUG to see envelope
     }
 
     void release()
