@@ -78,8 +78,8 @@ void Synth::noteOn(int note, int velocity)
 {
     voice.note = note;
 
-    float freq = 440.0f * std::exp2((float(note - 69) + tune) / 12.0f);
-    voice.period = sampleRate / freq;
+    float period = calcPeriod(note);
+    voice.period = period;
     voice.osc1.amplitude = (velocity / 127.0f) * 0.5f;
     voice.osc2.amplitude = voice.osc1.amplitude * oscMix;
 
@@ -96,4 +96,13 @@ void Synth::noteOff(int note)
     if (voice.note == note) {
         voice.release();
     }
+}
+
+float Synth::calcPeriod(int note) const
+{
+    // std::exp is faster than std::pow, hence we rewrite `std::pow(2, (note - 69)/12)` into the code below
+    // std::exp is preferabble in audio code when x < 0 (e.g. rewrite `std::pow(x, y)` to `exp(y * log(x))`)
+    float period = tune * std::exp(-0.05776226505f * float(note));
+    while (period < 6.0f || (period * detune) < 6.0f) { period += period; }
+    return period;
 }
