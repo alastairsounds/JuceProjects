@@ -7,10 +7,11 @@ class Envelope
 public:
     float level;
     float multiplier;
+    float target;
 
     float nextValue()
     {
-        level *= multiplier;
+        level = multiplier * (level - target) + target;
         return level;
     }
 };

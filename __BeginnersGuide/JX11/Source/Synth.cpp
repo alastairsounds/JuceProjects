@@ -79,6 +79,7 @@ void Synth::noteOn(int note, int velocity)
     voice.osc.reset();
     voice.env.level = 1.0f;
     voice.env.multiplier = envDecay;
+    voice.env.target = 0.2f;
 }
 
 void Synth::noteOff(int note)
