@@ -246,6 +246,10 @@ void JX11AudioProcessor::update()
     synth.noiseMix = noiseMix * 0.06f;
 
     synth.oscMix = oscMixParam->get() / 100.0f;
+
+    float semi = oscTuneParam->get();
+    float cent = oscFineParam->get();
+    synth.detune = std::pow(1.059463094359f, -semi - 0.01f * cent); // 2^(1/12)=1.059463094359, so 2(N/12) = 1.059463094359^N
 }
 
 void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
