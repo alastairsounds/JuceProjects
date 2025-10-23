@@ -21,6 +21,7 @@ public:
 
     float oscMix;
     float detune;
+    float tune;
 
 private:
     void noteOn(int note, int velocity);

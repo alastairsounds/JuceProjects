@@ -250,6 +250,10 @@ void JX11AudioProcessor::update()
     float semi = oscTuneParam->get();
     float cent = oscFineParam->get();
     synth.detune = std::pow(1.059463094359f, -semi - 0.01f * cent); // 2^(1/12)=1.059463094359, so 2(N/12) = 1.059463094359^N
+
+    float octave = octaveParam->get();
+    float tuning = tuningParam->get();
+    synth.tune = octave * 12.0f + tuning / 100.0f;
 }
 
 void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
