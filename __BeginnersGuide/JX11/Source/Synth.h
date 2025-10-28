@@ -29,7 +29,8 @@ private:
     float calcPeriod(int note) const;
 
     float sampleRate;
-    float pitchBend;
     Voice voice;
     NoiseGenerator noiseGen;
+
+    float pitchBend;
 };

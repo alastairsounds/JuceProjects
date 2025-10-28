@@ -27,6 +27,7 @@ void Synth::render(float** outputBuffers, int sampleCount)
 {
     float* outputBufferLeft = outputBuffers[0];
     float* outputBufferRight = outputBuffers[1];
+
     voice.osc1.period = voice.period * pitchBend;
     voice.osc2.period = voice.osc1.period * detune;
 
@@ -78,9 +79,8 @@ void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
             break;
         }
 
+        // Pitch bend
         case 0xE0:
-            // pitchBend = 2 * ((-2 * (data/8192)) / 12)
-            // log(2^((-2/8192) / 12)) = -0.000014102f
             pitchBend = std::exp(-0.000014102f * float(data1 + 128 * data2 - 8192));
             break;
     }
@@ -93,6 +93,7 @@ void Synth::noteOn(int note, int velocity)
 
     float period = calcPeriod(note);
     voice.period = period;
+
     voice.osc1.amplitude = (velocity / 127.0f) * 0.5f;
     voice.osc2.amplitude = voice.osc1.amplitude * oscMix;
 
@@ -113,8 +114,6 @@ void Synth::noteOff(int note)
 
 float Synth::calcPeriod(int note) const
 {
-    // std::exp is faster than std::pow, hence we rewrite `std::pow(2, (note - 69)/12)` into the code below
-    // std::exp is preferabble in audio code when x < 0 (e.g. rewrite `std::pow(x, y)` to `exp(y * log(x))`)
     float period = tune * std::exp(-0.05776226505f * float(note));
     while (period < 6.0f || (period * detune) < 6.0f) { period += period; }
     return period;
