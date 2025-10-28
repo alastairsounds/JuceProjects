@@ -8,6 +8,7 @@ struct Voice
     int note;
     float saw;
     float period;
+    float panLeft, panRight;
 
     Oscillator osc1;
     Oscillator osc2;
@@ -20,6 +21,8 @@ struct Voice
         osc1.reset();
         osc2.reset();
         env.reset();
+        panLeft = 0.707f;
+        panRight = 0.707f;
     }
 
     float render(float input)
@@ -37,5 +40,12 @@ struct Voice
     void release()
     {
         env.release();
+    }
+
+    void updatePanning()
+    {
+        float panning = std::clamp((note - 60.0f) / 24.0f, -1.0f, 1.0f);
+        panLeft = std::sin(PI_OVER_4 * (1.0f - panning));
+        panRight = std::sin(PI_OVER_4 * (1.0f + panning));
     }
 };
