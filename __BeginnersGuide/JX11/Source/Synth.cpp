@@ -18,7 +18,10 @@ void Synth::deallocateResources()
 
 void Synth::reset()
 {
-    voice.reset();
+    for (int v = 0; v < MAX_VOICES; ++v) {
+        voices[v].reset();
+    }
+
     noiseGen.reset();
     pitchBend = 1.0f;
 }
@@ -28,8 +31,13 @@ void Synth::render(float** outputBuffers, int sampleCount)
     float* outputBufferLeft = outputBuffers[0];
     float* outputBufferRight = outputBuffers[1];
 
-    voice.osc1.period = voice.period * pitchBend;
-    voice.osc2.period = voice.osc1.period * detune;
+    for (int v = 0; v< MAX_VOICES; ++v) {
+        Voice& voice = voices[v];
+        if (voice.env.isActive()) {
+            voice.osc1.period = voice.period * pitchBend;
+            voice.osc2.period = voice.osc1.period * detune;
+        }
+    }
 
     for (int sample = 0; sample < sampleCount; ++sample) {
         float noise = noiseGen.nextValue() * noiseMix;
@@ -37,10 +45,13 @@ void Synth::render(float** outputBuffers, int sampleCount)
         float outputLeft = 0.0f;
         float outputRight = 0.0f;
 
-        if (voice.env.isActive()) {
-            float output = voice.render(noise);
-            outputLeft += output * voice.panLeft;
-            outputRight += output * voice.panRight;
+        for (int v = 0; v < MAX_VOICES; ++v) {
+            Voice& voice = voices[v];
+            if (voice.env.isActive()) {
+                float output = voice.render(noise);
+                outputLeft += output * voice.panLeft;
+                outputRight += output * voice.panRight;
+            }
         }
 
         if (outputBufferRight != nullptr) {
@@ -51,8 +62,11 @@ void Synth::render(float** outputBuffers, int sampleCount)
         }
     }
 
-    if (!voice.env.isActive()) {
-        voice.env.reset();
+    for (int v = 0; v < MAX_VOICES; ++v) {
+        Voice& voice = voices[v];
+        if (!voice.env.isActive()) {
+            voice.env.reset();
+        }
     }
 
     protectYourEars(outputBufferLeft, sampleCount);
@@ -88,25 +102,12 @@ void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 
 void Synth::noteOn(int note, int velocity)
 {
-    voice.note = note;
-    voice.updatePanning();
-
-    float period = calcPeriod(note);
-    voice.period = period;
-
-    voice.osc1.amplitude = (velocity / 127.0f) * 0.5f;
-    voice.osc2.amplitude = voice.osc1.amplitude * oscMix;
-
-    Envelope& env = voice.env;
-    env.attackMultiplier = envAttack;
-    env.decayMultiplier = envDecay;
-    env.sustainLevel = envSustain;
-    env.releaseMultiplier = envRelease;
-    env.attack();
+    startVoice(0, note, velocity);
 }
 
 void Synth::noteOff(int note)
 {
+    Voice& voice = voices[0];
     if (voice.note == note) {
         voice.release();
     }
@@ -117,4 +118,23 @@ float Synth::calcPeriod(int note) const
     float period = tune * std::exp(-0.05776226505f * float(note));
     while (period < 6.0f || (period * detune) < 6.0f) { period += period; }
     return period;
+}
+
+void Synth::startVoice(int v, int note, int velocity)
+{
+    float period = calcPeriod(note);
+    Voice& voice = voices[v];
+    voice.period = period;
+    voice.note = note;
+    voice.updatePanning();
+
+    voice.osc1.amplitude = (velocity / 127.0f) * 0.5f;
+    voice.osc2.amplitude = voice.osc1.amplitude * oscMix;
+
+    Envelope& env = voice.env;
+    env.attackMultiplier = envAttack;
+    env.decayMultiplier = envDecay;
+    env.sustainLevel = envSustain;
+    env.releaseMultiplier = envRelease;
+    env.attack();
 }
