@@ -32,10 +32,12 @@ private:
     float calcPeriod(int v, int note) const;
     void startVoice(int v, int note, int velocity);
     int findFreeVoice() const;
+    void controlChange(uint8_t data1, uint8_t data2);
 
     float sampleRate;
     std::array<Voice, MAX_VOICES> voices;
     NoiseGenerator noiseGen;
 
     float pitchBend;
+    bool sustainPedalPressed;
 };
