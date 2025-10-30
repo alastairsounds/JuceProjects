@@ -26,7 +26,7 @@ public:
     static constexpr int MAX_VOICES = 8;
     int numVoices;
     float volumeTrim;
-    float outputLevel;
+    juce::LinearSmoothedValue<float> outputLevelSmoother;
 
 private:
     void noteOn(int note, int velocity);
