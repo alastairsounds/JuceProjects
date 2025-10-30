@@ -231,6 +231,7 @@ void Synth::shiftQueuedNotes()
 {
     for (int tmp = MAX_VOICES - 1; tmp > 0; tmp--) {
         voices[tmp].note = voices[tmp - 1].note;
+        voices[tmp].release();
     }
 }
 
