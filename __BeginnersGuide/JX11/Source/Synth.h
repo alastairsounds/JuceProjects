@@ -25,17 +25,23 @@ public:
 
     static constexpr int MAX_VOICES = 8;
     int numVoices;
+
     float volumeTrim;
+
     juce::LinearSmoothedValue<float> outputLevelSmoother;
 
 private:
+    void controlChange(uint8_t data1, uint8_t data2);
+
     void noteOn(int note, int velocity);
     void noteOff(int note);
-    float calcPeriod(int v, int note) const;
+
     void startVoice(int v, int note, int velocity);
-    int findFreeVoice() const;
-    void controlChange(uint8_t data1, uint8_t data2);
     void restartMonoVoice(int note, int velocity);
+
+    float calcPeriod(int v, int note) const;
+    int findFreeVoice() const;
+
     void shiftQueuedNotes();
     int nextQueuedNote();
 

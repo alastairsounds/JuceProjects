@@ -177,8 +177,7 @@ void JX11AudioProcessor::releaseResources()
 void JX11AudioProcessor::reset()
 {
     synth.reset();
-    synth.outputLevelSmoother.setCurrentAndTargetValue(
-        juce::Decibels::decibelsToGain(outputLevelParam->get()));
+    synth.outputLevelSmoother.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(outputLevelParam->get()));
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -262,8 +261,7 @@ void JX11AudioProcessor::update()
 
     synth.numVoices = (polyModeParam->getIndex() == 0) ? 1 : Synth::MAX_VOICES;
 
-    synth.outputLevelSmoother.setTargetValue(
-        juce::Decibels::decibelsToGain(outputLevelParam->get()));
+    synth.outputLevelSmoother.setTargetValue(juce::Decibels::decibelsToGain(outputLevelParam->get()));
 }
 
 void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
