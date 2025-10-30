@@ -247,6 +247,8 @@ void JX11AudioProcessor::update()
 
     synth.oscMix = oscMixParam->get() / 100.0f;
 
+    synth.volumeTrim = 0.0008f * (3.2f - synth.oscMix - 25.0f * synth.noiseMix) * 1.5f;
+
     float semi = oscTuneParam->get();
     float cent = oscFineParam->get();
     synth.detune = std::pow(1.059463094359f, -semi - 0.01f * cent);
