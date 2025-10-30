@@ -259,6 +259,8 @@ void JX11AudioProcessor::update()
     synth.tune = sampleRate * std::exp(0.05776226505f * tuneInSemi);
 
     synth.numVoices = (polyModeParam->getIndex() == 0) ? 1 : Synth::MAX_VOICES;
+
+    synth.outputLevel = juce::Decibels::decibelsToGain(outputLevelParam->get());
 }
 
 void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)

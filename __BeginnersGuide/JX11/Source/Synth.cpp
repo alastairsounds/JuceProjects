@@ -58,6 +58,9 @@ void Synth::render(float** outputBuffers, int sampleCount)
             }
         }
 
+        outputLeft *= outputLevel;
+        outputRight *= outputLevel;
+
         if (outputBufferRight != nullptr) {
             outputBufferLeft[sample] = outputLeft;
             outputBufferRight[sample] = outputRight;
