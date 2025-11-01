@@ -1,4 +1,6 @@
 {
-  "editor.formatOnSave": false,
-  "editor.tabSize": 4
+  "[cpp]": {
+    "editor.formatOnSave": false,
+    "editor.tabSize": 4
+  }
 }
