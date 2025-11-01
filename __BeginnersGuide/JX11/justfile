@@ -1,0 +1,12 @@
+PROJ := "./Builds/MacOSX/JX11.xcodeproj"
+APH_APP := "AudioPluginHost"
+APH_FILE := "/Users/AKS/_Documents/4_Learn/_Projects/Juce/__BeginnersGuide/JX11/JX11.filtergraph"
+
+[private]
+just:
+  @just --list
+
+# Build the project with the specified scheme. scheme=[VST3, All, AU, Standalone Plugin]. configuration=[Debug, Release]
+build scheme="VST3" configuration="Debug":
+  xcodebuild -quiet -project {{PROJ}} -scheme "JX11 - {{scheme}}" -configuration {{configuration}} build
+  open -a {{APH_APP}} {{APH_FILE}}
