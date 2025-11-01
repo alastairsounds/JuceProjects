@@ -30,6 +30,9 @@ public:
 
     juce::LinearSmoothedValue<float> outputLevelSmoother;
 
+    float velocitySensitivity;
+    bool ignoreVelocity;
+
 private:
     void controlChange(uint8_t data1, uint8_t data2);
 

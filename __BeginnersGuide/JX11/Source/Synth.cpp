@@ -141,6 +141,7 @@ void Synth::controlChange(uint8_t data1, uint8_t data2)
 
 void Synth::noteOn(int note, int velocity)
 {
+    if (ignoreVelocity) { velocity = 80; }
     int v = 0;  // index of the voice to use (0 = mono voice)
 
     if (numVoices == 1) {  // monophonic
@@ -186,7 +187,8 @@ void Synth::startVoice(int v, int note, int velocity)
     voice.note = note;
     voice.updatePanning();
 
-    voice.osc1.amplitude = volumeTrim * velocity;
+    float vel = 0.004f * float((velocity + 64) * (velocity + 64)) - 8.0f;
+    voice.osc1.amplitude = volumeTrim * vel;
     voice.osc2.amplitude = voice.osc1.amplitude * oscMix;
 
     Envelope& env = voice.env;
