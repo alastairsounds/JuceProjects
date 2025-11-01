@@ -1,12 +1,20 @@
-PROJ := "./Builds/MacOSX/JX11.xcodeproj"
-APH_APP := "AudioPluginHost"
+APH_APP  := "AudioPluginHost"
 APH_FILE := "/Users/AKS/_Documents/4_Learn/_Projects/Juce/__BeginnersGuide/JX11/JX11.filtergraph"
+PROJ     := "./Builds/MacOSX/JX11.xcodeproj"
+R_APP    := "Reaper"
+R_FILE   := "/Users/AKS/_Documents/4_Learn/_Projects/Juce/__BeginnersGuide/JX11/JX11.RPP"
 
 [private]
 just:
   @just --list
 
-# Build the project with the specified scheme. scheme=[VST3, All, AU, Standalone Plugin]. configuration=[Debug, Release]
+# Build the project in AudioPluginHost. scheme=[VST3, All, AU, Standalone Plugin]. configuration=[Debug, Release]
 build scheme="VST3" configuration="Debug":
   xcodebuild -quiet -project {{PROJ}} -scheme "JX11 - {{scheme}}" -configuration {{configuration}} build
   open -a {{APH_APP}} {{APH_FILE}}
+
+# @todo figure out how to have this open quickly, allowing Reaper to run in background ("Close project" doesn't work)
+# Build the project in Reaper with the specified scheme. scheme=[VST3, All, AU, Standalone Plugin]. configuration=[Debug, Release]
+build-rpp scheme="VST3" configuration="Debug":
+  xcodebuild -quiet -project {{PROJ}} -scheme "JX11 - {{scheme}}" -configuration {{configuration}} build
+  open -a {{R_APP}} {{R_FILE}}
