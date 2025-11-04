@@ -33,6 +33,8 @@ void Synth::reset()
 
     lfo = 0.0f;
     lfoStep = 0;
+
+    modWheel = 0.0f;
 }
 
 void Synth::render(float** outputBuffers, int sampleCount)
@@ -129,6 +131,10 @@ void Synth::controlChange(uint8_t data1, uint8_t data2)
             if (!sustainPedalPressed) {
                 noteOff(SUSTAIN);
             }
+            break;
+
+        case 0x01:
+            modWheel = 0.000005f * float(data2 * data2);
             break;
 
         // All notes off
@@ -276,8 +282,8 @@ void Synth::updateLFO()
 
         const float sine = std::sin(lfo);
 
-        float vibratoMod = 1.0f + sine * vibrato;
-        float pwm = 1.0f + sine * pwmDepth;
+        float vibratoMod = 1.0f + sine * (modWheel + vibrato);
+        float pwm = 1.0f + sine * (modWheel + pwmDepth);
 
         for (int v = 0; v < MAX_VOICES; ++v) {
             Voice& voice = voices[v];
