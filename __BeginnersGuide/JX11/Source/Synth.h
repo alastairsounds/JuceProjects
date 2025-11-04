@@ -35,6 +35,7 @@ public:
     const int LFO_MAX = 32;
     float lfoInc;
     float vibrato;
+    float pwmDepth;
 
 private:
     void controlChange(uint8_t data1, uint8_t data2);
