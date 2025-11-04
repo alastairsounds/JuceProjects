@@ -32,8 +32,10 @@ public:
 
     float velocitySensitivity;
     bool ignoreVelocity;
+
     const int LFO_MAX = 32;
     float lfoInc;
+
     float vibrato;
     float pwmDepth;
 
@@ -42,6 +44,8 @@ public:
     float glideBend;
 
 private:
+    void updateLFO();
+
     void controlChange(uint8_t data1, uint8_t data2);
 
     void noteOn(int note, int velocity);
@@ -56,26 +60,24 @@ private:
     void shiftQueuedNotes();
     int nextQueuedNote();
 
-    float sampleRate;
-    std::array<Voice, MAX_VOICES> voices;
-    NoiseGenerator noiseGen;
-
-    float pitchBend;
-    bool sustainPedalPressed;
-
-    void updateLFO();
-
-    int lfoStep;
-    float lfo;
-    float modWheel;
-
-    int lastNote;
-
-    bool isPlayingLegatoStyle() const;
-
     inline void updatePeriod(Voice& voice)
     {
         voice.osc1.period = voice.period * pitchBend;
         voice.osc2.period = voice.osc1.period * detune;
     }
+
+    bool isPlayingLegatoStyle() const;
+
+    float sampleRate;
+    std::array<Voice, MAX_VOICES> voices;
+    NoiseGenerator noiseGen;
+
+    int lastNote;
+
+    int lfoStep;
+    float lfo;
+
+    float pitchBend;
+    bool sustainPedalPressed;
+    float modWheel;
 };

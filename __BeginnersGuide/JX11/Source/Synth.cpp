@@ -26,17 +26,16 @@ void Synth::reset()
     }
 
     noiseGen.reset();
+
     pitchBend = 1.0f;
     sustainPedalPressed = false;
-
-    outputLevelSmoother.reset(sampleRate, 0.05);
+    modWheel = 0.0f;
 
     lfo = 0.0f;
     lfoStep = 0;
-
-    modWheel = 0.0f;
-
     lastNote = 0;
+
+    outputLevelSmoother.reset(sampleRate, 0.05);
 }
 
 void Synth::render(float** outputBuffers, int sampleCount)
@@ -54,6 +53,7 @@ void Synth::render(float** outputBuffers, int sampleCount)
 
     for (int sample = 0; sample < sampleCount; ++sample) {
         updateLFO();
+
         float noise = noiseGen.nextValue() * noiseMix;
 
         float outputLeft = 0.0f;
@@ -91,6 +91,31 @@ void Synth::render(float** outputBuffers, int sampleCount)
     protectYourEars(outputBufferRight, sampleCount);
 }
 
+void Synth::updateLFO()
+{
+    if (--lfoStep <= 0) {
+        lfoStep = LFO_MAX;
+
+        lfo += lfoInc;
+        if (lfo > PI) { lfo -= TWO_PI; }
+
+        const float sine = std::sin(lfo);
+
+        float vibratoMod = 1.0f + sine * (modWheel + vibrato);
+        float pwm = 1.0f + sine * (modWheel + pwmDepth);
+
+        for (int v = 0; v < MAX_VOICES; ++v) {
+            Voice& voice = voices[v];
+            if (voice.env.isActive()) {
+                voice.osc1.modulation = vibratoMod;
+                voice.osc2.modulation = pwm;
+                voice.updateLFO();
+                updatePeriod(voice);
+            }
+        }
+    }
+}
+
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 {
     switch (data0 & 0xF0) {
@@ -126,6 +151,11 @@ void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 void Synth::controlChange(uint8_t data1, uint8_t data2)
 {
     switch (data1) {
+        // Mod wheel
+        case 0x01:
+            modWheel = 0.000005f * float(data2 * data2);
+            break;
+
         // Sustain pedal
         case 0x40:
             sustainPedalPressed = (data2 >= 64);
@@ -133,10 +163,6 @@ void Synth::controlChange(uint8_t data1, uint8_t data2)
             if (!sustainPedalPressed) {
                 noteOff(SUSTAIN);
             }
-            break;
-
-        case 0x01:
-            modWheel = 0.000005f * float(data2 * data2);
             break;
 
         // All notes off
@@ -154,6 +180,7 @@ void Synth::controlChange(uint8_t data1, uint8_t data2)
 void Synth::noteOn(int note, int velocity)
 {
     if (ignoreVelocity) { velocity = 80; }
+
     int v = 0;  // index of the voice to use (0 = mono voice)
 
     if (numVoices == 1) {  // monophonic
@@ -205,7 +232,6 @@ void Synth::startVoice(int v, int note, int velocity)
     }
 
     voice.period = period * std::pow(1.059463094359f, float(noteDistance) - glideBend);
-
     if (voice.period < 6.0f) { voice.period = 6.0f; }
 
     lastNote = note;
@@ -287,32 +313,6 @@ int Synth::nextQueuedNote()
 
     // No notes in the queue.
     return 0;
-}
-
-void Synth::updateLFO()
-{
-    if (--lfoStep <= 0) {
-        lfoStep = LFO_MAX;
-
-        lfo += lfoInc;
-        if (lfo > PI) { lfo -= TWO_PI; }
-
-        const float sine = std::sin(lfo);
-
-        float vibratoMod = 1.0f + sine * (modWheel + vibrato);
-        float pwm = 1.0f + sine * (modWheel + pwmDepth);
-
-        for (int v = 0; v < MAX_VOICES; ++v) {
-            Voice& voice = voices[v];
-            if (voice.env.isActive()) {
-                voice.osc1.modulation = vibratoMod;
-                voice.osc2.modulation = pwm;
-
-                voice.updateLFO();
-                updatePeriod(voice);
-            }
-        }
-    }
 }
 
 bool Synth::isPlayingLegatoStyle() const

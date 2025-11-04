@@ -8,16 +8,15 @@ struct Voice
     int note;
     float saw;
     float period;
+    float target;
+
+    float glideRate;
 
     Oscillator osc1;
     Oscillator osc2;
     Envelope env;
 
     float panLeft, panRight;
-
-    float target;
-
-    float glideRate;
 
     void reset()
     {
@@ -50,13 +49,13 @@ struct Voice
         panRight = std::sin(PI_OVER_4 * (1.0f + panning));
     }
 
-    void release()
-    {
-        env.release();
-    }
-
     void updateLFO()
     {
         period += glideRate * (target - period);
+    }
+
+    void release()
+    {
+        env.release();
     }
 };
