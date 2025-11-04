@@ -15,6 +15,10 @@ struct Voice
 
     float panLeft, panRight;
 
+    float target;
+
+    float glideRate;
+
     void reset()
     {
         note = 0;
@@ -49,5 +53,10 @@ struct Voice
     void release()
     {
         env.release();
+    }
+
+    void updateLFO()
+    {
+        period += glideRate * (target - period);
     }
 };

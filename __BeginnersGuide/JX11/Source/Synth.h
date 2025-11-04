@@ -37,6 +37,10 @@ public:
     float vibrato;
     float pwmDepth;
 
+    int glideMode;
+    float glideRate;
+    float glideBend;
+
 private:
     void controlChange(uint8_t data1, uint8_t data2);
 
@@ -64,4 +68,14 @@ private:
     int lfoStep;
     float lfo;
     float modWheel;
+
+    int lastNote;
+
+    bool isPlayingLegatoStyle() const;
+
+    inline void updatePeriod(Voice& voice)
+    {
+        voice.osc1.period = voice.period * pitchBend;
+        voice.osc2.period = voice.osc1.period * detune;
+    }
 };
