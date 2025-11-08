@@ -297,6 +297,9 @@ void JX11AudioProcessor::update()
     synth.glideBend = glideBendParam->get();
 
     synth.filterKeyTracking = 0.08f * filterFreqParam->get() - 1.5f;
+
+    float filterLFO = filterLFOParam->get() / 100.0f;
+    synth.filterLFODepth = 2.5f * filterLFO * filterLFO;
 }
 
 void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)

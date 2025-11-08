@@ -48,6 +48,8 @@ public:
     float filterQ;
     float resonanceCtl;
 
+    float filterLFODepth;
+
 private:
     void updateLFO();
 
@@ -85,4 +87,6 @@ private:
     float pitchBend;
     bool sustainPedalPressed;
     float modWheel;
+
+    float pressure;
 };
