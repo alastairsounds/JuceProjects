@@ -231,6 +231,7 @@ void Synth::startVoice(int v, int note, int velocity)
     Voice& voice = voices[v];
     voice.target = period;
     voice.cutoff = sampleRate / (period * PI);
+    voice.cutoff *= std::exp(velocitySensitivity * float(velocity - 64));
 
     int noteDistance = 0;
     if (lastNote > 0) {
@@ -274,6 +275,11 @@ void Synth::restartMonoVoice(int note, int velocity)
     voice.env.level += SILENCE + SILENCE;
     voice.note = note;
     voice.updatePanning();
+
+    voice.cutoff = sampleRate / (period * PI);
+    if (velocity > 0) {
+        voice.cutoff *= std::exp(velocitySensitivity * float(velocity - 64));
+    }
 }
 
 float Synth::calcPeriod(int v, int note) const
