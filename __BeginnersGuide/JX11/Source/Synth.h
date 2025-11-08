@@ -43,6 +43,8 @@ public:
     float glideRate;
     float glideBend;
 
+    float filterKeyTracking;
+
 private:
     void updateLFO();
 
