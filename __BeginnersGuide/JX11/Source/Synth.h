@@ -45,6 +45,9 @@ public:
 
     float filterKeyTracking;
 
+    float filterQ;
+    float resonanceCtl;
+
 private:
     void updateLFO();
 
