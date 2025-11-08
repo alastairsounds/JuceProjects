@@ -89,4 +89,6 @@ private:
     float modWheel;
 
     float pressure;
+
+    float filterCtl;
 };
