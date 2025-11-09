@@ -46,6 +46,8 @@ void Synth::reset()
     pressure = 0.0f;
 
     filterCtl = 0.0f;
+
+    filterZip = 0.0f;
 }
 
 void Synth::render(float** outputBuffers, int sampleCount)
@@ -117,12 +119,14 @@ void Synth::updateLFO()
         float vibratoMod = 1.0f + sine * (modWheel + vibrato);
         float pwm = 1.0f + sine * (modWheel + pwmDepth);
         float filterMod = filterKeyTracking + filterCtl + (filterLFODepth + pressure) * sine;
+        float filterZip = 0.005f * (filterMod - filterZip);
 
         for (int v = 0; v < MAX_VOICES; ++v) {
             Voice& voice = voices[v];
             if (voice.env.isActive()) {
                 voice.osc1.modulation = vibratoMod;
                 voice.osc2.modulation = pwm;
+                voice.filterMod = filterZip;
                 voice.filterMod = filterMod;
                 voice.updateLFO();
                 updatePeriod(voice);

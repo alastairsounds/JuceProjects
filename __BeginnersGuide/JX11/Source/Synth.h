@@ -91,4 +91,6 @@ private:
     float pressure;
 
     float filterCtl;
+
+    float filterZip;
 };
