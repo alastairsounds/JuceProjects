@@ -44,12 +44,8 @@ public:
     float glideBend;
 
     float filterKeyTracking;
-
     float filterQ;
-    float resonanceCtl;
-
     float filterLFODepth;
-
     float filterAttack, filterDecay, filterSustain, filterRelease;
     float filterEnvDepth;
 
@@ -86,14 +82,12 @@ private:
 
     int lfoStep;
     float lfo;
+    float filterZip;
 
     float pitchBend;
     bool sustainPedalPressed;
     float modWheel;
-
+    float resonanceCtl;
     float pressure;
-
     float filterCtl;
-
-    float filterZip;
 };

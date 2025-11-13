@@ -11,14 +11,18 @@ Synth::Synth()
 
 void Synth::allocateResources(double sampleRate_, int samplesPerBlock)
 {
-    sampleRate = static_cast<float>(sampleRate_);
+    // sampleRate = static_cast<float>(sampleRate_);
 
+    // For using the JUCE LadderFilter:
     juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = 1;
 
     for (int v = 0; v < MAX_VOICES; ++v) {
+        // voices[v].filter.sampleRate = sampleRate;
+
+        // For using the JUCE LadderFilter:
         voices[v].filter.setMode(juce::dsp::LadderFilterMode::LPF12);
         voices[v].filter.prepare(spec);
     }
@@ -40,20 +44,16 @@ void Synth::reset()
     pitchBend = 1.0f;
     sustainPedalPressed = false;
     modWheel = 0.0f;
+    resonanceCtl = 1.0f;
+    pressure = 0.0f;
+    filterCtl = 0.0f;
 
     lfo = 0.0f;
     lfoStep = 0;
     lastNote = 0;
+    filterZip = 0.0f;
 
     outputLevelSmoother.reset(sampleRate, 0.05);
-
-    resonanceCtl = 1.0f;
-
-    pressure = 0.0f;
-
-    filterCtl = 0.0f;
-
-    filterZip = 0.0f;
 }
 
 void Synth::render(float** outputBuffers, int sampleCount)
@@ -125,8 +125,10 @@ void Synth::updateLFO()
 
         float vibratoMod = 1.0f + sine * (modWheel + vibrato);
         float pwm = 1.0f + sine * (modWheel + pwmDepth);
+
         float filterMod = filterKeyTracking + filterCtl + (filterLFODepth + pressure) * sine;
-        float filterZip = 0.005f * (filterMod - filterZip);
+
+        filterZip += 0.005f * (filterMod - filterZip);
 
         for (int v = 0; v < MAX_VOICES; ++v) {
             Voice& voice = voices[v];
@@ -134,7 +136,6 @@ void Synth::updateLFO()
                 voice.osc1.modulation = vibratoMod;
                 voice.osc2.modulation = pwm;
                 voice.filterMod = filterZip;
-                voice.filterMod = filterMod;
                 voice.updateLFO();
                 updatePeriod(voice);
             }
@@ -196,17 +197,21 @@ void Synth::controlChange(uint8_t data1, uint8_t data2)
             }
             break;
 
+        // Resonance
         case 0x47:
+        case 0x17:  // knob on my MIDI controller
             resonanceCtl = 154.0f / float(154 - data2);
             break;
 
         // Filter +
         case 0x4A:
+        case 0x15:  // knob on my MIDI controller
             filterCtl = 0.02f * float(data2);
             break;
 
         // Filter -
         case 0x4B:
+        case 0x16:  // knob on my MIDI controller
             filterCtl = -0.03f * float(data2);
             break;
 
@@ -268,8 +273,6 @@ void Synth::startVoice(int v, int note, int velocity)
 
     Voice& voice = voices[v];
     voice.target = period;
-    voice.cutoff = sampleRate / (period * PI);
-    voice.cutoff *= std::exp(velocitySensitivity * float(velocity - 64));
 
     int noteDistance = 0;
     if (lastNote > 0) {
@@ -284,6 +287,9 @@ void Synth::startVoice(int v, int note, int velocity)
     lastNote = note;
     voice.note = note;
     voice.updatePanning();
+
+    voice.cutoff = sampleRate / (period * PI);
+    voice.cutoff *= std::exp(velocitySensitivity * float(velocity - 64));
 
     float vel = 0.004f * float((velocity + 64) * (velocity + 64)) - 8.0f;
     voice.osc1.amplitude = volumeTrim * vel;
@@ -317,14 +323,14 @@ void Synth::restartMonoVoice(int note, int velocity)
 
     if (glideMode == 0) { voice.period = period; }
 
-    voice.env.level += SILENCE + SILENCE;
-    voice.note = note;
-    voice.updatePanning();
-
     voice.cutoff = sampleRate / (period * PI);
     if (velocity > 0) {
         voice.cutoff *= std::exp(velocitySensitivity * float(velocity - 64));
     }
+
+    voice.env.level += SILENCE + SILENCE;
+    voice.note = note;
+    voice.updatePanning();
 }
 
 float Synth::calcPeriod(int v, int note) const

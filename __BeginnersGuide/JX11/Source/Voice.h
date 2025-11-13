@@ -12,20 +12,19 @@ struct Voice
     float target;
 
     float glideRate;
-
-    Oscillator osc1;
-    Oscillator osc2;
-    Envelope env;
-    Filter filter;
-
-    float panLeft, panRight;
     float cutoff;
     float filterMod;
     float filterQ;
     float pitchBend;
-
-    Envelope filterEnv;
     float filterEnvDepth;
+
+    Oscillator osc1;
+    Oscillator osc2;
+    Envelope env;
+    Envelope filterEnv;
+    Filter filter;
+
+    float panLeft, panRight;
 
     void reset()
     {
@@ -35,12 +34,11 @@ struct Voice
         osc1.reset();
         osc2.reset();
         env.reset();
+        filterEnv.reset();
         filter.reset();
 
         panLeft = 0.707f;
         panRight = 0.707f;
-    
-        filterEnv.reset();
     }
 
     float render(float input)
@@ -51,6 +49,7 @@ struct Voice
 
         float output = saw + input;
         output = filter.render(output);
+
         float envelope = env.nextValue();
         return output * envelope;
     }
@@ -65,8 +64,10 @@ struct Voice
     void updateLFO()
     {
         period += glideRate * (target - period);
+
         float fenv = filterEnv.nextValue();
         float modulatedCutoff = cutoff * std::exp(filterMod + filterEnvDepth * fenv) / pitchBend;
+
         modulatedCutoff = std::clamp(modulatedCutoff, 30.0f, 20000.0f);
         filter.updateCoefficients(modulatedCutoff, filterQ);
     }
