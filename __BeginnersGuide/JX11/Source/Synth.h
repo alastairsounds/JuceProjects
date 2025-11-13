@@ -50,6 +50,9 @@ public:
 
     float filterLFODepth;
 
+    float filterAttack, filterDecay, filterSustain, filterRelease;
+    float filterEnvDepth;
+
 private:
     void updateLFO();
 
