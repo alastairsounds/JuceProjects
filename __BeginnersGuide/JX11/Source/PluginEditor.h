@@ -29,5 +29,12 @@ private:
     // access the processor object that created it.
     JX11AudioProcessor& audioProcessor;
 
+    juce::Slider outputLevelKnob;
+
+    using APVTS = juce::AudioProcessorValueTreeState;
+    using sliderAttachment = APVTS::SliderAttachment;
+
+    sliderAttachment outputLevelAttachment { audioProcessor.apvts, ParameterID::outputLevel.getParamID(), outputLevelKnob };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessorEditor)
 };
