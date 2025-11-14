@@ -13,6 +13,7 @@
 JX11AudioProcessorEditor::JX11AudioProcessorEditor (JX11AudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    juce::LookAndFeel::setDefaultLookAndFeel(&globalLNF);
     outputLevelKnob.label = "Level";
     addAndMakeVisible(outputLevelKnob);
     filterResoKnob.label = "Reso";

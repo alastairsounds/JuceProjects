@@ -5,6 +5,8 @@
               pluginCode="JX11" cppLanguageStandard="17">
   <MAINGROUP id="oJCTC2" name="JX11">
     <GROUP id="{06D34FFE-5C7B-FE1F-1632-1023D927248F}" name="Source">
+      <FILE id="gee809" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
+      <FILE id="T198H1" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
       <FILE id="vjDAMm" name="RotaryKnob.cpp" compile="1" resource="0" file="Source/RotaryKnob.cpp"/>
       <FILE id="iHomRt" name="RotaryKnob.h" compile="0" resource="0" file="Source/RotaryKnob.h"/>
       <FILE id="i0lqAl" name="Filter.h" compile="0" resource="0" file="Source/Filter.h"/>

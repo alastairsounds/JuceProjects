@@ -12,6 +12,9 @@ RotaryKnob::RotaryKnob()
     addAndMakeVisible(slider);
 
     setBounds(0, 0, 100, 120);
+
+    slider.setRotaryParameters(juce::degreesToRadians(225.0f),
+                               juce::degreesToRadians(495.0f), true);
 }
 
 RotaryKnob::~RotaryKnob()
