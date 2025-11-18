@@ -32,6 +32,7 @@ JX11AudioProcessorEditor::JX11AudioProcessorEditor (JX11AudioProcessor& p)
 JX11AudioProcessorEditor::~JX11AudioProcessorEditor()
 {
     midiLearnButton.removeListener(this);
+    audioProcessor.midiLearn = false;
 }
 
 //==============================================================================
@@ -53,4 +54,14 @@ void JX11AudioProcessorEditor::buttonClicked(juce::Button* button)
     button->setButtonText("Waiting...");
     button->setEnabled(false);
     audioProcessor.midiLearn = true;
+    startTimerHz(10);
+}
+
+void JX11AudioProcessorEditor::timerCallback()
+{
+    if (!audioProcessor.midiLearn) {
+        stopTimer();
+        midiLearnButton.setButtonText("MIDI Learn");
+        midiLearnButton.setEnabled(true);
+    }
 }

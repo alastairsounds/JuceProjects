@@ -350,6 +350,12 @@ void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, j
 
 void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
 {
+    if (midiLearn && ((data0 & 0xF) == 0xB0)) {
+        DBG("learned a MIDI CC");
+        synth.resoCC = data1;
+        midiLearn = false;
+        return;
+    }
     // Control Change
     if ((data0 & 0xF0) == 0xB0) {
         //DBG(data1);

@@ -21,7 +21,7 @@ using ButtonAttachment = APVTS::ButtonAttachment;
 /**
 */
 class JX11AudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                  private juce::Button::Listener
+                                  private juce::Button::Listener, juce::Timer
 {
 public:
     JX11AudioProcessorEditor (JX11AudioProcessor&);
@@ -47,6 +47,8 @@ private:
 
     juce::TextButton midiLearnButton;
     void buttonClicked(juce::Button* button) override;
+
+    void timerCallback() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessorEditor)
 };
