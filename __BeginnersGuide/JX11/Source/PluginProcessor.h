@@ -95,6 +95,8 @@ public:
 
     std::atomic<bool> midiLearn;
 
+    std::atomic<uint8_t> midiLearnCC;
+
 private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
