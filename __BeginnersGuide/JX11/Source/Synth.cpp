@@ -198,7 +198,6 @@ void Synth::controlChange(uint8_t data1, uint8_t data2)
             break;
 
         // Resonance
-        case 0x47:
         case 0x17:  // knob on my MIDI controller
             resonanceCtl = 154.0f / float(154 - data2);
             break;
@@ -224,6 +223,10 @@ void Synth::controlChange(uint8_t data1, uint8_t data2)
                 sustainPedalPressed = false;
             }
             break;
+    }
+
+    if (data1 == resoCC) {
+        resonanceCtl = 154.0f / float(154 - data2);
     }
 }
 

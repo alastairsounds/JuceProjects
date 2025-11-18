@@ -20,7 +20,8 @@ using ButtonAttachment = APVTS::ButtonAttachment;
 //==============================================================================
 /**
 */
-class JX11AudioProcessorEditor  : public juce::AudioProcessorEditor
+class JX11AudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                  private juce::Button::Listener
 {
 public:
     JX11AudioProcessorEditor (JX11AudioProcessor&);
@@ -43,6 +44,9 @@ private:
     ButtonAttachment polyModeAttachment { audioProcessor.apvts, ParameterID::polyMode.getParamID(), polyModeButton };
 
     LookAndFeel globalLNF;
+
+    juce::TextButton midiLearnButton;
+    void buttonClicked(juce::Button* button) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessorEditor)
 };

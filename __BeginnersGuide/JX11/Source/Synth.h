@@ -49,6 +49,8 @@ public:
     float filterAttack, filterDecay, filterSustain, filterRelease;
     float filterEnvDepth;
 
+    uint8_t resoCC = 0x47;
+
 private:
     void updateLFO();
 
