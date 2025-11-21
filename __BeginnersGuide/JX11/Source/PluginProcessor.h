@@ -94,7 +94,6 @@ public:
     juce::AudioProcessorValueTreeState apvts { *this, nullptr, "Parameters", createParameterLayout() };
 
     std::atomic<bool> midiLearn;
-
     std::atomic<uint8_t> midiLearnCC;
 
 private:

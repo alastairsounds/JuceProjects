@@ -2,9 +2,6 @@
 
 #include <JuceHeader.h>
 
-//==============================================================================
-/*
-*/
 class RotaryKnob  : public juce::Component
 {
 public:

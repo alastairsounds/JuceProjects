@@ -10,10 +10,6 @@
 #include "PluginEditor.h"
 #include "Utils.h"
 
-static const juce::Identifier pluginTag = "PLUGIN";
-static const juce::Identifier extraTag = "EXTRA";
-static const juce::Identifier midiCCAttribute = "midiCC";
-
 //==============================================================================
 JX11AudioProcessor::JX11AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -182,6 +178,7 @@ void JX11AudioProcessor::reset()
 {
     synth.reset();
     synth.outputLevelSmoother.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(outputLevelParam->get()));
+
     midiLearn = false;
     midiLearnCC = synth.resoCC;
 }
@@ -357,12 +354,13 @@ void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, j
 
 void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
 {
-    if (midiLearn && ((data0 & 0xF) == 0xB0)) {
+    if (midiLearn && ((data0 & 0xF0) == 0xB0)) {
         DBG("learned a MIDI CC");
         midiLearnCC = data1;
         midiLearn = false;
         return;
     }
+
     // Control Change
     if ((data0 & 0xF0) == 0xB0) {
         //DBG(data1);
@@ -408,6 +406,11 @@ juce::AudioProcessorEditor* JX11AudioProcessor::createEditor()
 }
 
 //==============================================================================
+
+static const juce::Identifier pluginTag = "PLUGIN";
+static const juce::Identifier extraTag = "EXTRA";
+static const juce::Identifier midiCCAttribute = "midiCC";
+
 void JX11AudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto xml = std::make_unique<juce::XmlElement>(pluginTag);
@@ -421,7 +424,7 @@ void JX11AudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 
     copyXmlToBinary(*xml, destData);
 
-    DBG(xml->toString());
+    //DBG(xml->toString());
 }
 
 void JX11AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
