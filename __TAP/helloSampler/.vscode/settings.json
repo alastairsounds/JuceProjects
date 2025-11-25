@@ -4,5 +4,14 @@
   "[cpp]": {
     "editor.defaultFormatter": "ms-vscode.cpptools",
     "editor.tabSize": 4
+  },
+  "files.associations": {
+    "*.jsonc": "jsonc",
+    "*.k": "cpp",
+    "*.tcc": "cpp",
+    "*.log": "csv",
+    "*.mds": "ini",
+    "*.mjb": "ini",
+    "*.mm": "cpp"
   }
 }
