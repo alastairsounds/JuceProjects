@@ -1,0 +1,11 @@
+PROJ := "./Builds/MacOSX/helloSampler.xcodeproj"
+R_APP := "Reaper"
+R_FILE := "./helloSampler.RPP"
+
+[private]
+just:
+  @just --list
+
+build scheme="All" configuration="Debug":
+  xcodebuild -quiet -project {{PROJ}} -scheme "helloSampler - {{scheme}}" -configuration {{configuration}} build
+  open -a {{R_APP}} {{R_FILE}}
