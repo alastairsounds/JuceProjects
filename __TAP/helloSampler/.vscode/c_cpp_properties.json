@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "name": "Mac",
+      "includePath": [
+        "${workspaceFolder}/JuceLibraryCode",
+        "${workspaceFolder}/JuceLibraryCode/**",
+        "${workspaceFolder}/Source/**",
+        "~/Dev/JUCE/modules/**" // Adjust this path to your JUCE modules location
+      ],
+      "macFrameworkPath": ["/System/Library/Frameworks", "/Library/Frameworks"],
+      "compilerPath": "/usr/bin/clang",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "macos-clang-arm64",
+      "defines": ["JUCE_MODAL_LOOPS_PERMITTED=1"],
+      "forcedInclude": ["${workspaceFolder}/JuceLibraryCode/JucePluginDefines.h"]
+    }
+  ],
+  "version": 4
+}

@@ -1,0 +1,21 @@
+{
+  // /Users/AKS/_Documents/4_Learn/_Projects/Juce/__TAP/helloSampler/
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "just build",
+      "type": "shell",
+      "command": "just build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared"
+      }
+    }
+  ]
+}
