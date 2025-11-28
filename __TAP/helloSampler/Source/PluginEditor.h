@@ -25,6 +25,15 @@ private:
     std::vector<float> mAudioPoints;
     bool mShouldBePainting { false };
 
+    juce::Slider mAttackSlider;
+    juce::Slider mDecaySlider;
+    juce::Slider mSustainSlider;
+    juce::Slider mReleaseSlider;
+    juce::Label mAttackLabel;
+    juce::Label mDecayLabel;
+    juce::Label mSustainLabel;
+    juce::Label mReleaseLabel;
+
     HelloSamplerAudioProcessor& processor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HelloSamplerAudioProcessorEditor)
