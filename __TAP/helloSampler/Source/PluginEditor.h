@@ -8,7 +8,8 @@
 //==============================================================================
 /**
 */
-class HelloSamplerAudioProcessorEditor : public juce::AudioProcessorEditor
+class HelloSamplerAudioProcessorEditor : public juce::AudioProcessorEditor,
+                                         public juce::Timer
 {
 public:
     HelloSamplerAudioProcessorEditor (HelloSamplerAudioProcessor&);
@@ -17,6 +18,8 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+
+    void timerCallback() override;
 
 private:
     WaveThumbnail mWaveThumbnail;
