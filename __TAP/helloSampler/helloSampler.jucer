@@ -4,6 +4,12 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="dmCOay" name="helloSampler">
     <GROUP id="{5E21AD0E-82A2-DA65-A3CB-01C89C138C58}" name="Source">
+      <FILE id="FtUZsD" name="ADSRComponent.cpp" compile="1" resource="0"
+            file="Source/ADSRComponent.cpp"/>
+      <FILE id="aZ8oql" name="ADSRComponent.h" compile="0" resource="0" file="Source/ADSRComponent.h"/>
+      <FILE id="Dwc6Br" name="WaveThumbnail.cpp" compile="1" resource="0"
+            file="Source/WaveThumbnail.cpp"/>
+      <FILE id="bK8jGP" name="WaveThumbnail.h" compile="0" resource="0" file="Source/WaveThumbnail.h"/>
       <FILE id="exUBXB" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="WDkAYD" name="PluginProcessor.h" compile="0" resource="0"
