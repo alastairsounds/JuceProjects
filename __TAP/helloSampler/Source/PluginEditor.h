@@ -7,8 +7,7 @@
 /**
 */
 class HelloSamplerAudioProcessorEditor : public juce::AudioProcessorEditor,
-                                         public juce::FileDragAndDropTarget,
-                                         public juce::Slider::Listener
+                                         public juce::FileDragAndDropTarget
 {
 public:
     HelloSamplerAudioProcessorEditor (HelloSamplerAudioProcessor&);
@@ -20,8 +19,6 @@ public:
 
     bool isInterestedInFileDrag (const juce::StringArray& files) override;
     void filesDropped (const juce::StringArray& files, int x, int y) override;
-
-    void sliderValueChanged (juce::Slider* slider) override;
 
 private:
     juce::TextButton mLoadButton { "Load" };
@@ -36,6 +33,11 @@ private:
     juce::Label mDecayLabel;
     juce::Label mSustainLabel;
     juce::Label mReleaseLabel;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mAttackAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDecayAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mSustainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mReleaseAttachment;
 
     HelloSamplerAudioProcessor& processor;
 
